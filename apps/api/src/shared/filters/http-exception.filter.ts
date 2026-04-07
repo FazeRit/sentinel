@@ -5,15 +5,19 @@ import {
   HttpException,
   HttpStatus,
   Logger,
+  Inject,
+  LoggerService,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { ApiResponseDto } from '../dto/response/api-response.dto';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 @Catch()
 export class CatchEverythingFilter implements ExceptionFilter {
   constructor(
     private readonly httpAdapterHost: HttpAdapterHost,
-    private readonly logger: Logger,
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: LoggerService,
   ) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
@@ -28,11 +32,6 @@ export class CatchEverythingFilter implements ExceptionFilter {
 
     const message = this.getErrorMessage(exception);
 
-    this.logger.error(
-      `[${request.method}] ${request.url} | Status: ${status} | Message: ${message}`,
-      exception instanceof Error ? exception.stack : undefined,
-    );
-
     const responseBody = new ApiResponseDto<null>({
       data: null,
       status: status,
@@ -40,6 +39,8 @@ export class CatchEverythingFilter implements ExceptionFilter {
       timestamp: new Date(),
       path: request.url,
     });
+
+    this.logger.error(message);
 
     httpAdapter.reply(ctx.getResponse(), responseBody, status);
   }

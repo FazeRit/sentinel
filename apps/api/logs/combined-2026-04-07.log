@@ -1,0 +1,7 @@
+{"context":"NestFactory","level":"info","message":"Starting Nest application...","timestamp":"2026-04-07 20:02:40"}
+{"context":"InstanceLoader","level":"info","message":"ThrottlerModule dependencies initialized","timestamp":"2026-04-07 20:02:40"}
+{"context":"InstanceLoader","level":"info","message":"ConfigHostModule dependencies initialized","timestamp":"2026-04-07 20:02:40"}
+{"context":"InstanceLoader","level":"info","message":"WinstonModule dependencies initialized","timestamp":"2026-04-07 20:02:40"}
+{"context":"InstanceLoader","level":"info","message":"ConfigModule dependencies initialized","timestamp":"2026-04-07 20:02:40"}
+{"context":"InstanceLoader","level":"info","message":"AppModule dependencies initialized","timestamp":"2026-04-07 20:02:40"}
+{"context":"NestApplication","level":"info","message":"Nest application successfully started","timestamp":"2026-04-07 20:02:40"}
