@@ -22,7 +22,7 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization',
   });
 
-    app.use(
+  app.use(
     helmet({
       contentSecurityPolicy: {
         directives: {
@@ -34,8 +34,8 @@ async function bootstrap() {
       },
       crossOriginEmbedderPolicy: false,
     }),
-    );
-  
+  );
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
