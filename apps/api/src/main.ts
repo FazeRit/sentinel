@@ -4,8 +4,11 @@ import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
+// TODO: think about splitting to use some builder pattern or whatever to make it more readable
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
@@ -36,6 +39,6 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
