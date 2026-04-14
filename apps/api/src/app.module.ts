@@ -5,14 +5,18 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './config/winston/winston.config';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from './infra/prisma/prisma.module';
+import { FileModule } from './modules/file/file.module';
 
 @Module({
   imports: [
+    PrismaModule,
     ThrottlerModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     WinstonModule.forRoot(winstonConfig),
+    FileModule,
   ],
   controllers: [],
   providers: [

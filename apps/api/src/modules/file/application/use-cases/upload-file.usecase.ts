@@ -8,7 +8,7 @@ import { MEMORY_STORAGE_READ_PORT } from '../ports/memory-storage-read.port';
 import { FileEntity } from '../../domain/entities/file.entity';
 import { MemoryStorageWritePort } from '../ports/memory-storage-write.port';
 
-export class UploadFile {
+export class UploadFileUseCase {
   private readonly MAX_SIZE_MB: number = 15;
 
   //TODO: change to S3 upload
