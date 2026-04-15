@@ -4,7 +4,7 @@ import { CreateFileProps, RestoreFileProps } from '../types/file.types';
 export class FileEntity {
   private readonly _id: string;
   private readonly _name: string;
-  private readonly _size: number;
+  private readonly _bytes: number;
   private readonly _mimetype: string;
   private _storagePath: string | null;
   private readonly _labId: string | null;
@@ -14,7 +14,7 @@ export class FileEntity {
   private constructor(props: RestoreFileProps) {
     this._id = props.id;
     this._name = props.name;
-    this._size = props.size;
+    this._bytes = props.bytes;
     this._mimetype = props.mimetype;
     this._storagePath = props.storagePath;
     this._labId = props.labId;
@@ -28,8 +28,8 @@ export class FileEntity {
   public get name(): string {
     return this._name;
   }
-  public get size(): number {
-    return this._size;
+  public get bytes(): number {
+    return this._bytes;
   }
   public get mimetype(): string {
     return this._mimetype;
@@ -49,6 +49,7 @@ export class FileEntity {
 
   public static create(props: CreateFileProps): FileEntity {
     const now = new Date();
+
     return new FileEntity({
       ...props,
       id: randomUUID(),
@@ -75,6 +76,6 @@ export class FileEntity {
 
   public validateSize(maxSizeMb: number): boolean {
     const BYTES_IN_MB = 1024 * 1024;
-    return this._size > 0 && this._size <= maxSizeMb * BYTES_IN_MB;
+    return this._bytes > 0 && this._bytes <= maxSizeMb * BYTES_IN_MB;
   }
 }

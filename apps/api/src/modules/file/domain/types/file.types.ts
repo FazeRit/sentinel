@@ -1,7 +1,7 @@
 export interface FileProps {
   id: string;
   name: string;
-  size: number;
+  bytes: number;
   mimetype: string;
   storagePath: string | null;
   labId: string | null;

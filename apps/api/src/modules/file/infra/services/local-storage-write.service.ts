@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { unlink } from 'fs/promises';
-import { FileEntity } from '../../domain/entities/file.entity';
 import { pipeline, Readable } from 'stream';
 import { homedir } from 'os';
 import { join } from 'path';
@@ -19,14 +18,14 @@ export class LocalStorageWriteService implements MemoryStorageWritePort {
     }
   }
 
-  async upload(domain: FileEntity, file: Express.Multer.File): Promise<string> {
+  async upload(fileId: string, file: Express.Multer.File): Promise<string> {
     if (!existsSync(this.baseDir)) {
       mkdirSync(this.baseDir, {
         recursive: true,
       });
     }
 
-    const fileName = `${domain.id}-${file.originalname}`;
+    const fileName = `${fileId}-${file.originalname}`;
     const fullPath = join(this.baseDir, fileName);
 
     const fileStream = Readable.from(file.buffer);

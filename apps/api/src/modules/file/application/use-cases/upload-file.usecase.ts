@@ -20,21 +20,21 @@ export class UploadFileUseCase {
   ) {}
 
   async execute(labId: string, file: Express.Multer.File): Promise<FileEntity> {
-    const domain = FileEntity.create({
+    const fileEntity = FileEntity.create({
       name: file.originalname,
-      size: file.size,
+      bytes: file.size,
       mimetype: file.mimetype,
       labId,
       storagePath: null,
     });
 
-    if (!domain.isPdf()) {
+    if (!fileEntity.isPdf()) {
       throw new BadRequestException(
         `Invalid file type: ${file.mimetype}. Only PDF is allowed.`,
       );
     }
 
-    if (!domain.validateSize(this.MAX_SIZE_MB)) {
+    if (!fileEntity.validateSize(this.MAX_SIZE_MB)) {
       throw new BadRequestException(
         `File is too large. Maximum size allowed is ${this.MAX_SIZE_MB}MB.`,
       );
@@ -43,13 +43,15 @@ export class UploadFileUseCase {
     let storagePath: string | null = null;
 
     try {
-      storagePath = await this.storage.upload(domain, file);
+      const fileId = fileEntity.id;
 
-      domain.setStoragePath(storagePath);
+      storagePath = await this.storage.upload(fileId, file);
 
-      await this.fileWriteRepo.save(domain);
+      fileEntity.setStoragePath(storagePath);
 
-      return domain;
+      await this.fileWriteRepo.save(fileEntity);
+
+      return fileEntity;
     } catch (error) {
       throw new InternalServerErrorException(
         `Failed to process file upload: ${error.message}`,

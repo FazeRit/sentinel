@@ -2,11 +2,11 @@ import { File as PrismaFile } from '@prisma/client';
 import { FileEntity } from '../../domain/entities/file.entity';
 
 export class FileMapper {
-  static toDomain(model: PrismaFile): FileEntity {
+  static toEntity(model: PrismaFile): FileEntity {
     return FileEntity.restore({
       id: model.id,
       name: model.name,
-      size: model.size,
+      bytes: model.size,
       mimetype: model.mimetype,
       storagePath: model.storagePath,
       labId: model.labId,
@@ -15,16 +15,16 @@ export class FileMapper {
     });
   }
 
-  static toModel(domain: FileEntity): PrismaFile {
+  static toModel(fileEntity: FileEntity): PrismaFile {
     return {
-      id: domain.id,
-      name: domain.name,
-      mimetype: domain.mimetype,
-      size: domain.size,
-      labId: domain.labId ?? null,
-      storagePath: domain.storagePath,
-      createdAt: domain.createdAt,
-      updatedAt: domain.updatedAt,
+      id: fileEntity.id,
+      name: fileEntity.name,
+      mimetype: fileEntity.mimetype,
+      size: fileEntity.bytes,
+      labId: fileEntity.labId ?? null,
+      storagePath: fileEntity.storagePath,
+      createdAt: fileEntity.createdAt,
+      updatedAt: fileEntity.updatedAt,
     };
   }
 }
