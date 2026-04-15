@@ -17,7 +17,7 @@ export class FileReadRepository implements FileReadPort {
 
     if (!file) return null;
 
-    return FileMapper.toDomain(file);
+    return FileMapper.toEntity(file);
   }
 
   async findByLabId(labId: string): Promise<Array<FileEntity> | null> {
@@ -29,6 +29,6 @@ export class FileReadRepository implements FileReadPort {
 
     if (!files) return null;
 
-    return files.map((file) => FileMapper.toDomain(file));
+    return files.map((file) => FileMapper.toEntity(file));
   }
 }

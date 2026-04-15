@@ -8,16 +8,16 @@ import { FileWritePort } from '../../application/ports/file-write.port';
 export class FileWriteRepository implements FileWritePort {
   constructor(private readonly prisma: PrismaService) {}
 
-  async save(file: FileEntity): Promise<void> {
-    const model = FileMapper.toModel(file);
+  async save(fileEntity: FileEntity): Promise<void> {
+    const model = FileMapper.toModel(fileEntity);
 
     await this.prisma.file.create({
       data: model,
     });
   }
 
-  async update(file: FileEntity): Promise<void> {
-    const model = FileMapper.toModel(file);
+  async update(fileEntity: FileEntity): Promise<void> {
+    const model = FileMapper.toModel(fileEntity);
 
     await this.prisma.file.update({
       where: {
