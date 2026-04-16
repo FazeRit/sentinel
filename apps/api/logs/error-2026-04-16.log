@@ -1,0 +1,5 @@
+{"level":"error","message":"Cannot POST /api/upload","stack":[null],"timestamp":"2026-04-16 14:43:27"}
+{"level":"error","message":"Cannot destructure property 'labId' of 'dto' as it is undefined.","stack":[null],"timestamp":"2026-04-16 14:43:39"}
+{"level":"error","message":"Failed to process file upload: this.storage.upload is not a function","stack":[null],"timestamp":"2026-04-16 14:46:33"}
+{"level":"error","message":"Failed to process file upload: Failed to save file to disk: The \"streams[stream.length - 1]\" property must be of type function. Received an instance of WriteStream","stack":[null],"timestamp":"2026-04-16 14:47:20"}
+{"level":"error","message":"Failed to process file upload: \nInvalid `this.prisma.file.create()` invocation in\n/home/denis/vscode_projects/sentinel/apps/api/src/modules/file/infra/repositories/file-write.repository.ts:14:28\n\n  11 async save(fileEntity: FileEntity): Promise<void> {\n  12   const model = FileMapper.toModel(fileEntity);\n  13 \n→ 14   await this.prisma.file.create(\nThe table `public.File` does not exist in the current database.","stack":[null],"timestamp":"2026-04-16 14:50:50"}

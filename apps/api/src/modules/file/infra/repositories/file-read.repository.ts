@@ -7,7 +7,7 @@ import { FileReadPort } from '../../application/ports/file-read.port';
 @Injectable()
 export class FileReadRepository implements FileReadPort {
   constructor(private readonly prisma: PrismaService) {}
-
+  
   async findById(id: string): Promise<FileEntity | null> {
     const file = await this.prisma.file.findUnique({
       where: {

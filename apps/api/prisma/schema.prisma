@@ -15,6 +15,8 @@ model Lab {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("labs")
 }
 
 model File {
@@ -29,4 +31,6 @@ model File {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("files")
 }

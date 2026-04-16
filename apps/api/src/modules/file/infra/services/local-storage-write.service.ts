@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { unlink } from 'fs/promises';
-import { pipeline, Readable } from 'stream';
+import { pipeline } from 'stream/promises';
 import { homedir } from 'os';
 import { join } from 'path';
 import { MemoryStorageWritePort } from '../../application/ports/memory-storage-write.port';
 import { existsSync, mkdirSync, createWriteStream } from 'fs';
+import { Readable } from 'stream';
 
 @Injectable()
 export class LocalStorageWriteService implements MemoryStorageWritePort {

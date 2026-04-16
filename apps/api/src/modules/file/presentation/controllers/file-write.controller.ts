@@ -1,4 +1,6 @@
 import {
+  Body,
+  Controller,
   HttpStatus,
   Post,
   UploadedFile,
@@ -10,6 +12,7 @@ import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
 import { FileResponseDto } from '../dto/response/file-response.dto';
 import { UploadFileDto } from '../dto/request/upload-file.dto';
 
+@Controller('files')
 export class FileWriteController {
   constructor(private readonly uploadFileUseCase: UploadFileUseCase) {}
 
@@ -18,7 +21,7 @@ export class FileWriteController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-    dto: UploadFileDto,
+    @Body() dto: UploadFileDto,
   ): Promise<ApiResponseDto<FileResponseDto>> {
     const { labId } = dto;
 

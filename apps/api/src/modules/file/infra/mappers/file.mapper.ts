@@ -6,7 +6,7 @@ export class FileMapper {
     return FileEntity.restore({
       id: model.id,
       name: model.name,
-      bytes: model.size,
+      bytes: model.bytes,
       mimetype: model.mimetype,
       storagePath: model.storagePath,
       labId: model.labId,
@@ -20,7 +20,7 @@ export class FileMapper {
       id: fileEntity.id,
       name: fileEntity.name,
       mimetype: fileEntity.mimetype,
-      size: fileEntity.bytes,
+      bytes: fileEntity.bytes,
       labId: fileEntity.labId ?? null,
       storagePath: fileEntity.storagePath,
       createdAt: fileEntity.createdAt,

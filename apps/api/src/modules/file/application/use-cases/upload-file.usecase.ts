@@ -4,9 +4,11 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
-import { MEMORY_STORAGE_READ_PORT } from '../ports/memory-storage-read.port';
 import { FileEntity } from '../../domain/entities/file.entity';
-import { MemoryStorageWritePort } from '../ports/memory-storage-write.port';
+import {
+  MEMORY_STORAGE_WRITE_PORT,
+  MemoryStorageWritePort,
+} from '../ports/memory-storage-write.port';
 
 export class UploadFileUseCase {
   private readonly MAX_SIZE_MB: number = 15;
@@ -15,7 +17,7 @@ export class UploadFileUseCase {
   constructor(
     @Inject(FILE_WRITE_PORT)
     private readonly fileWriteRepo: FileWritePort,
-    @Inject(MEMORY_STORAGE_READ_PORT)
+    @Inject(MEMORY_STORAGE_WRITE_PORT)
     private readonly storage: MemoryStorageWritePort,
   ) {}
 
