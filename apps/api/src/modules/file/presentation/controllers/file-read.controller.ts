@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
 import { FindFileUseCase } from '../../application/use-cases/find-file.usecase';
 import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
 import { FileResponseDto } from '../dto/response/file-response.dto';
@@ -15,7 +15,7 @@ export class FileReadController {
 
   @Get()
   async findFilesByLabId(
-    @Param() dto: FindFilesByLabIdDto,
+    @Query() dto: FindFilesByLabIdDto,
   ): Promise<ApiResponseDto<Array<FileResponseDto>>> {
     const { labId } = dto;
 

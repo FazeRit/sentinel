@@ -1,8 +1,9 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { FileEntity } from '../../domain/entities/file.entity';
 import { FILE_READ_PORT } from '../ports/file-read.port';
 import { FileReadRepository } from '../../infra/repositories/file-read.repository';
 
+@Injectable()
 export class FindFilesByLabIdUseCase {
   constructor(
     @Inject(FILE_READ_PORT)
