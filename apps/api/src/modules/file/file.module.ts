@@ -7,6 +7,8 @@ import { FileReadController } from './presentation/controllers/file-read.control
 import { FileWriteController } from './presentation/controllers/file-write.controller';
 import { FindFileUseCase } from './application/use-cases/find-file.usecase';
 import { FindFilesByLabIdUseCase } from './application/use-cases/find-files-by-lab-id.usecase';
+import { DeleteFileUseCase } from './application/use-cases/delete-file.usecase';
+import { DeleteFileByLabIdUseCase } from './application/use-cases/delete-files-by-lab-id.usecase';
 
 @Module({
   imports: [MulterModule.register()],
@@ -17,6 +19,8 @@ import { FindFilesByLabIdUseCase } from './application/use-cases/find-files-by-l
     UploadFileUseCase,
     FindFileUseCase,
     FindFilesByLabIdUseCase,
+    DeleteFileUseCase,
+    DeleteFileByLabIdUseCase,
   ],
 })
 export class FileModule {}
