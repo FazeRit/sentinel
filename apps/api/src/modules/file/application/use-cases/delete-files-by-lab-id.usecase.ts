@@ -1,0 +1,37 @@
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { FILE_WRITE_PORT } from '../ports/file-write.port';
+import { FILE_READ_PORT } from '../ports/file-read.port';
+import { FileWriteRepository } from '../../infra/repositories/file-write.repository';
+import { FileReadRepository } from '../../infra/repositories/file-read.repository';
+import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
+import { LocalStorageWriteService } from '../../infra/services/local-storage-write.service';
+
+@Injectable()
+export class DeleteFileByLabIdUseCase {
+  constructor(
+    @Inject(FILE_WRITE_PORT)
+    private readonly fileWriteRepo: FileWriteRepository,
+    @Inject(FILE_READ_PORT)
+    private readonly fileReadRepo: FileReadRepository,
+    @Inject(MEMORY_STORAGE_WRITE_PORT)
+    private readonly storageWrite: LocalStorageWriteService,
+  ) {}
+
+  async execute(labId: string): Promise<void> {
+    const files = await this.fileReadRepo.findByLabId(labId);
+
+    if (!files || files.length === 0) {
+      throw new NotFoundException(
+        `No files found for laboratory with ID "${labId}"`,
+      );
+    }
+
+    for (const file of files) {
+      const { storagePath } = file;
+
+      if (storagePath) await this.storageWrite.delete(storagePath);
+    }
+
+    await this.fileWriteRepo.deleteByLabId(labId);
+  }
+}
