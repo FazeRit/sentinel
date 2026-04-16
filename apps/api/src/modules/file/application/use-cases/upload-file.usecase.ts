@@ -1,13 +1,15 @@
 import {
   BadRequestException,
   Inject,
+  Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
-import { MEMORY_STORAGE_READ_PORT } from '../ports/memory-storage-read.port';
 import { FileEntity } from '../../domain/entities/file.entity';
-import { MemoryStorageWritePort } from '../ports/memory-storage-write.port';
+import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
+import { LocalStorageWriteService } from '../../infra/services/local-storage-write.service';
 
+@Injectable()
 export class UploadFileUseCase {
   private readonly MAX_SIZE_MB: number = 15;
 
@@ -15,8 +17,8 @@ export class UploadFileUseCase {
   constructor(
     @Inject(FILE_WRITE_PORT)
     private readonly fileWriteRepo: FileWritePort,
-    @Inject(MEMORY_STORAGE_READ_PORT)
-    private readonly storage: MemoryStorageWritePort,
+    @Inject(MEMORY_STORAGE_WRITE_PORT)
+    private readonly storageWrite: LocalStorageWriteService,
   ) {}
 
   async execute(labId: string, file: Express.Multer.File): Promise<FileEntity> {
@@ -45,7 +47,7 @@ export class UploadFileUseCase {
     try {
       const fileId = fileEntity.id;
 
-      storagePath = await this.storage.upload(fileId, file);
+      storagePath = await this.storageWrite.upload(fileId, file);
 
       fileEntity.setStoragePath(storagePath);
 

@@ -1,8 +1,9 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { FILE_READ_PORT } from '../ports/file-read.port';
 import { FileReadRepository } from '../../infra/repositories/file-read.repository';
 import { FileEntity } from '../../domain/entities/file.entity';
 
+@Injectable()
 export class FindFileUseCase {
   constructor(
     @Inject(FILE_READ_PORT)
