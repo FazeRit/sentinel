@@ -4,10 +4,10 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
 import { FileEntity } from '../../domain/entities/file.entity';
-import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
 import { LocalStorageWriteService } from '../../infra/services/local-storage-write.service';
+import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
+import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
 
 @Injectable()
 export class UploadFileUseCase {
