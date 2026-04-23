@@ -3,6 +3,7 @@ import { CreateFileProps, RestoreFileProps } from '../types/file.types';
 
 export class FileEntity {
   private readonly _id: string;
+  private readonly _ownerId: string;
   private readonly _name: string;
   private readonly _bytes: number;
   private readonly _mimetype: string;
@@ -13,6 +14,7 @@ export class FileEntity {
 
   private constructor(props: RestoreFileProps) {
     this._id = props.id;
+    this._ownerId = props.ownerId;
     this._name = props.name;
     this._bytes = props.bytes;
     this._mimetype = props.mimetype;
@@ -24,6 +26,9 @@ export class FileEntity {
 
   public get id(): string {
     return this._id;
+  }
+  public get ownerId(): string {
+    return this._ownerId;
   }
   public get name(): string {
     return this._name;
@@ -53,6 +58,7 @@ export class FileEntity {
     return new FileEntity({
       ...props,
       id: randomUUID(),
+      ownerId: props.ownerId,
       storagePath: props.storagePath ?? null,
       labId: props.labId ?? null,
       createdAt: now,

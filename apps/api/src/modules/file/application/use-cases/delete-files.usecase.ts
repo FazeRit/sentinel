@@ -1,13 +1,13 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { FILE_WRITE_PORT } from '../ports/file-write.port';
-import { FILE_READ_PORT } from '../ports/file-read.port';
-import { FileWriteRepository } from '../../infra/repositories/file-write.repository';
 import { FileReadRepository } from '../../infra/repositories/file-read.repository';
-import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
+import { FileWriteRepository } from '../../infra/repositories/file-write.repository';
 import { LocalStorageWriteService } from '../../infra/services/local-storage-write.service';
+import { FILE_READ_PORT } from '../ports/file-read.port';
+import { FILE_WRITE_PORT } from '../ports/file-write.port';
+import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
 
 @Injectable()
-export class DeleteFileByLabIdUseCase {
+export class DeleteFilesUseCase {
   constructor(
     @Inject(FILE_WRITE_PORT)
     private readonly fileWriteRepo: FileWriteRepository,
@@ -17,8 +17,12 @@ export class DeleteFileByLabIdUseCase {
     private readonly storageWrite: LocalStorageWriteService,
   ) {}
 
-  async execute(labId: string): Promise<void> {
-    const files = await this.fileReadRepo.findByLabId(labId);
+  async execute(labId: string, ownerId?: string): Promise<void> {
+    const { items: files } = await this.fileReadRepo.findFiles(
+      undefined,
+      labId,
+      ownerId,
+    );
 
     if (!files || files.length === 0) {
       throw new NotFoundException(
@@ -32,6 +36,6 @@ export class DeleteFileByLabIdUseCase {
       if (storagePath) await this.storageWrite.delete(storagePath);
     }
 
-    await this.fileWriteRepo.deleteByLabId(labId);
+    await this.fileWriteRepo.deleteFiles(labId, ownerId);
   }
 }

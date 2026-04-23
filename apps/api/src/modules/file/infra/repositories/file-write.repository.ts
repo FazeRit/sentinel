@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { FileWritePort } from '../../application/ports/file-write.port';
 import { FileEntity } from '../../domain/entities/file.entity';
 import { FileMapper } from '../mappers/file.mapper';
-import { FileWritePort } from '../../application/ports/file-write.port';
 
 @Injectable()
 export class FileWriteRepository implements FileWritePort {
@@ -27,7 +27,7 @@ export class FileWriteRepository implements FileWritePort {
     });
   }
 
-  async delete(id: string): Promise<void> {
+  async deleteFile(id: string): Promise<void> {
     await this.prisma.file.delete({
       where: {
         id,
@@ -35,10 +35,13 @@ export class FileWriteRepository implements FileWritePort {
     });
   }
 
-  async deleteByLabId(labId: string): Promise<void> {
+  async deleteFiles(labId: string, ownerId?: string): Promise<void> {
     await this.prisma.file.deleteMany({
       where: {
         labId,
+        ...(ownerId && {
+          ownerId,
+        }),
       },
     });
   }
