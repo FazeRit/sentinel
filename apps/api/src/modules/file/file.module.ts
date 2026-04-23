@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { fileProviders } from './presentation/providers/file.provider';
-import { memoryStorageProviders } from './presentation/providers/memory-storage.provider';
-import { UploadFileUseCase } from './application/use-cases/upload-file.usecase';
 import { MulterModule } from '@nestjs/platform-express';
+import { DeleteFileUseCase } from './application/use-cases/delete-file.usecase';
+import { DeleteFilesUseCase } from './application/use-cases/delete-files.usecase';
+import { FindFileUseCase } from './application/use-cases/find-file.usecase';
+import { FindFilesUseCase } from './application/use-cases/find-files.usecase';
+import { UploadFileUseCase } from './application/use-cases/save-file.usecase';
 import { FileReadController } from './presentation/controllers/file-read.controller';
 import { FileWriteController } from './presentation/controllers/file-write.controller';
-import { FindFileUseCase } from './application/use-cases/find-file.usecase';
-import { FindFilesByLabIdUseCase } from './application/use-cases/find-files-by-lab-id.usecase';
-import { DeleteFileUseCase } from './application/use-cases/delete-file.usecase';
-import { DeleteFileByLabIdUseCase } from './application/use-cases/delete-files-by-lab-id.usecase';
+import { fileProviders } from './presentation/providers/file.provider';
+import { memoryStorageProviders } from './presentation/providers/memory-storage.provider';
 
 @Module({
   imports: [MulterModule.register()],
@@ -18,9 +18,9 @@ import { DeleteFileByLabIdUseCase } from './application/use-cases/delete-files-b
     ...memoryStorageProviders,
     UploadFileUseCase,
     FindFileUseCase,
-    FindFilesByLabIdUseCase,
+    FindFilesUseCase,
     DeleteFileUseCase,
-    DeleteFileByLabIdUseCase,
+    DeleteFilesUseCase,
   ],
 })
 export class FileModule {}

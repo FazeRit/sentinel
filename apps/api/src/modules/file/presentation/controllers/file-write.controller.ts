@@ -10,21 +10,21 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadFileUseCase } from '../../application/use-cases/upload-file.usecase';
+import { UploadFileUseCase } from '../../application/use-cases/save-file.usecase';
 import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
 import { FileResponseDto } from '../dto/response/file-response.dto';
 import { UploadFileDto } from '../dto/request/upload-file.dto';
 import { DeleteFileDto } from '../dto/request/delete-file.dto';
 import { DeleteFileUseCase } from '../../application/use-cases/delete-file.usecase';
-import { DeleteFileByLabIdUseCase } from '../../application/use-cases/delete-files-by-lab-id.usecase';
-import { DeleteFilesByLabIdDto } from '../dto/request/delete-files-by-lab-id.dto';
+import { DeleteFilesDto } from '../dto/request/delete-files.dto';
+import { DeleteFilesUseCase } from '../../application/use-cases/delete-files.usecase';
 
 @Controller('files')
 export class FileWriteController {
   constructor(
     private readonly uploadFileUseCase: UploadFileUseCase,
     private readonly deleteFileUseCase: DeleteFileUseCase,
-    private readonly deleteFilesByLabIdUseCase: DeleteFileByLabIdUseCase,
+    private readonly deleteFilesUseCase: DeleteFilesUseCase,
   ) {}
 
   // TODO: think about getting with decorators message and status for api response dto, and using auto interceptor to skip this creepy creating response class every time
@@ -70,11 +70,11 @@ export class FileWriteController {
 
   @Delete()
   async deleteFilesByLabId(
-    @Query() dto: DeleteFilesByLabIdDto,
+    @Query() dto: DeleteFilesDto,
   ): Promise<ApiResponseDto<null>> {
-    const { labId } = dto;
+    const { labId, ownerId } = dto;
 
-    await this.deleteFilesByLabIdUseCase.execute(labId);
+    await this.deleteFilesUseCase.execute(labId, ownerId);
 
     const response = new ApiResponseDto<null>({
       data: null,

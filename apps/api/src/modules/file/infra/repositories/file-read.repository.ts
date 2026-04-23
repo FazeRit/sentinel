@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { ApiPaginationMetaResponseDto } from 'src/shared/dto/response/api-paginition-meta-response.dto';
+import { PaginationResult } from 'src/shared/dto/response/pagination-result.dto';
+import { FileReadPort } from '../../application/ports/file-read.port';
 import { FileEntity } from '../../domain/entities/file.entity';
 import { FileMapper } from '../mappers/file.mapper';
-import { FileReadPort } from '../../application/ports/file-read.port';
 
 @Injectable()
 export class FileReadRepository implements FileReadPort {
@@ -20,15 +22,46 @@ export class FileReadRepository implements FileReadPort {
     return FileMapper.toEntity(file);
   }
 
-  async findByLabId(labId: string): Promise<Array<FileEntity> | null> {
+  async findFiles(
+    limit: number = 10,
+    labId?: string,
+    ownerId?: string,
+    cursor?: string,
+  ): Promise<PaginationResult<FileEntity>> {
     const files = await this.prisma.file.findMany({
+      take: limit + 1,
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : 0,
       where: {
         labId,
+        ownerId,
+      },
+      orderBy: {
+        id: 'asc',
       },
     });
 
-    if (!files) return null;
+    const hasNextPage = files.length > limit;
 
-    return files.map((file) => FileMapper.toEntity(file));
+    const items = hasNextPage ? files.slice(0, limit) : files;
+
+    const lastItem = items[items.length - 1];
+    const nextCursor = hasNextPage ? lastItem.id : null;
+
+    const totalItems = await this.prisma.file.count({
+      where: {
+        labId,
+        ownerId,
+      },
+    });
+
+    return {
+      items: items.map(FileMapper.toEntity),
+      meta: new ApiPaginationMetaResponseDto(
+        nextCursor ?? undefined,
+        hasNextPage,
+        totalItems,
+      ),
+    };
   }
 }

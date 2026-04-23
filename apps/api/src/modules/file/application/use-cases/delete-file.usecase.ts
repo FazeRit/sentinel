@@ -30,6 +30,6 @@ export class DeleteFileUseCase {
       await this.storageWrite.delete(storagePath);
     }
 
-    await this.fileWriteRepo.delete(id);
+    await this.fileWriteRepo.deleteFile(id);
   }
 }

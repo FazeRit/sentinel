@@ -1,5 +1,6 @@
 export interface FileProps {
   id: string;
+  ownerId: string;
   name: string;
   bytes: number;
   mimetype: string;

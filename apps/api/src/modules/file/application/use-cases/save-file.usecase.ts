@@ -23,6 +23,7 @@ export class UploadFileUseCase {
 
   async execute(labId: string, file: Express.Multer.File): Promise<FileEntity> {
     const fileEntity = FileEntity.create({
+      ownerId: labId,
       name: file.originalname,
       bytes: file.size,
       mimetype: file.mimetype,
