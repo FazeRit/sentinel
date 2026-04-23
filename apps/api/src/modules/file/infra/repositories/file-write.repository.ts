@@ -27,7 +27,7 @@ export class FileWriteRepository implements FileWritePort {
     });
   }
 
-  async deleteFile(id: string): Promise<void> {
+  async deleteById(id: string): Promise<void> {
     await this.prisma.file.delete({
       where: {
         id,

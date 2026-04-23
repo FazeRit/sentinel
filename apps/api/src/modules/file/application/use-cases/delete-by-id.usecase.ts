@@ -7,7 +7,7 @@ import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
 import { LocalStorageWriteService } from '../../infra/services/local-storage-write.service';
 
 @Injectable()
-export class DeleteFileUseCase {
+export class DeleteByIdUseCase {
   constructor(
     @Inject(FILE_WRITE_PORT)
     private readonly fileWriteRepo: FileWriteRepository,
@@ -30,6 +30,6 @@ export class DeleteFileUseCase {
       await this.storageWrite.delete(storagePath);
     }
 
-    await this.fileWriteRepo.deleteFile(id);
+    await this.fileWriteRepo.deleteById(id);
   }
 }

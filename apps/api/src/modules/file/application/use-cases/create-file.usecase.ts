@@ -10,7 +10,7 @@ import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
 import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
 
 @Injectable()
-export class UploadFileUseCase {
+export class CreateFileUseCase {
   private readonly MAX_SIZE_MB: number = 15;
 
   //TODO: change to S3 upload

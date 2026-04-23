@@ -4,7 +4,7 @@ import { FileReadRepository } from '../../infra/repositories/file-read.repositor
 import { FileEntity } from '../../domain/entities/file.entity';
 
 @Injectable()
-export class FindFileUseCase {
+export class FindByIdUseCase {
   constructor(
     @Inject(FILE_READ_PORT)
     private readonly fileReadRepo: FileReadRepository,
