@@ -1,29 +1,29 @@
 import {
-  Body,
-  Controller,
-  Delete,
-  HttpStatus,
-  Param,
-  Post,
-  Query,
-  UploadedFile,
-  UseInterceptors,
+    Body,
+    Controller,
+    Delete,
+    HttpStatus,
+    Param,
+    Post,
+    Query,
+    UploadedFile,
+    UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateFileUseCase } from '../../application/use-cases/create-file.usecase';
 import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
-import { FileResponseDto } from '../dto/response/file-response.dto';
-import { UploadFileDto } from '../dto/request/upload-file.dto';
-import { DeleteFileDto } from '../dto/request/delete-file.dto';
-import { DeleteByIdUseCase } from '../../application/use-cases/delete-by-id.usecase';
-import { DeleteFilesDto } from '../dto/request/delete-files.dto';
+import { CreateFileUseCase } from '../../application/use-cases/create-file.usecase';
+import { DeleteFileByIdUseCase } from '../../application/use-cases/delete-file-by-id.usecase';
 import { DeleteFilesUseCase } from '../../application/use-cases/delete-files.usecase';
+import { CreateFileDto } from '../dto/request/create-file.dto';
+import { DeleteFileByIdDto } from '../dto/request/delete-file-by-id.dto';
+import { DeleteFilesDto } from '../dto/request/delete-files.dto';
+import { FileResponseDto } from '../dto/response/file-response.dto';
 
 @Controller('files')
 export class FileWriteController {
   constructor(
     private readonly createFileUseCase: CreateFileUseCase,
-    private readonly deleteByIdUseCase: DeleteByIdUseCase,
+    private readonly deleteFileByIdUseCase: DeleteFileByIdUseCase,
     private readonly deleteFilesUseCase: DeleteFilesUseCase,
   ) {}
 
@@ -32,7 +32,7 @@ export class FileWriteController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-    @Body() dto: UploadFileDto,
+    @Body() dto: CreateFileDto,
   ): Promise<ApiResponseDto<FileResponseDto>> {
     const { labId } = dto;
 
@@ -52,10 +52,12 @@ export class FileWriteController {
   }
 
   @Delete('/:id')
-  async deleteFile(@Param() dto: DeleteFileDto): Promise<ApiResponseDto<null>> {
+  async deleteFile(
+    @Param() dto: DeleteFileByIdDto,
+  ): Promise<ApiResponseDto<null>> {
     const { id } = dto;
 
-    await this.deleteByIdUseCase.execute(id);
+    await this.deleteFileByIdUseCase.execute(id);
 
     const response = new ApiResponseDto<null>({
       data: null,

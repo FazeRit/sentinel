@@ -4,14 +4,14 @@ import { FileReadRepository } from '../../infra/repositories/file-read.repositor
 import { FileEntity } from '../../domain/entities/file.entity';
 
 @Injectable()
-export class FindByIdUseCase {
+export class FindFileByIdUseCase {
   constructor(
     @Inject(FILE_READ_PORT)
     private readonly fileReadRepo: FileReadRepository,
   ) {}
 
   async execute(id: string): Promise<FileEntity> {
-    const fileEntity = await this.fileReadRepo.findById(id);
+    const fileEntity = await this.fileReadRepo.findFileById(id);
 
     if (!fileEntity) {
       throw new NotFoundException(`File with ID "${id}" not found`);

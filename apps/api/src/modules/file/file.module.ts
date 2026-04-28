@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
-import { DeleteByIdUseCase } from './application/use-cases/delete-by-id.usecase';
+import { DeleteFileByIdUseCase } from './application/use-cases/delete-file-by-id.usecase';
 import { DeleteFilesUseCase } from './application/use-cases/delete-files.usecase';
-import { FindByIdUseCase } from './application/use-cases/find-by-id.usecase';
+import { FindFileByIdUseCase } from './application/use-cases/find-file-by-id.usecase';
 import { FindFilesUseCase } from './application/use-cases/find-files.usecase';
 import { CreateFileUseCase } from './application/use-cases/create-file.usecase';
 import { FileReadController } from './presentation/controllers/file-read.controller';
@@ -17,9 +17,9 @@ import { memoryStorageProviders } from './presentation/providers/memory-storage.
     ...fileProviders,
     ...memoryStorageProviders,
     CreateFileUseCase,
-    FindByIdUseCase,
+    FindFileByIdUseCase,
     FindFilesUseCase,
-    DeleteByIdUseCase,
+    DeleteFileByIdUseCase,
     DeleteFilesUseCase,
   ],
 })

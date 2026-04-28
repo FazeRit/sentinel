@@ -52,7 +52,7 @@ export class CreateFileUseCase {
 
       fileEntity.setStoragePath(storagePath);
 
-      await this.fileWriteRepo.save(fileEntity);
+      await this.fileWriteRepo.saveFile(fileEntity);
 
       return fileEntity;
     } catch (error) {

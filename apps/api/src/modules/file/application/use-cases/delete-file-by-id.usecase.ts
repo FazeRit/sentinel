@@ -1,13 +1,13 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { FILE_WRITE_PORT } from '../ports/file-write.port';
-import { FILE_READ_PORT } from '../ports/file-read.port';
-import { FileWriteRepository } from '../../infra/repositories/file-write.repository';
 import { FileReadRepository } from '../../infra/repositories/file-read.repository';
-import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
+import { FileWriteRepository } from '../../infra/repositories/file-write.repository';
 import { LocalStorageWriteService } from '../../infra/services/local-storage-write.service';
+import { FILE_READ_PORT } from '../ports/file-read.port';
+import { FILE_WRITE_PORT } from '../ports/file-write.port';
+import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
 
 @Injectable()
-export class DeleteByIdUseCase {
+export class DeleteFileByIdUseCase {
   constructor(
     @Inject(FILE_WRITE_PORT)
     private readonly fileWriteRepo: FileWriteRepository,
@@ -18,7 +18,7 @@ export class DeleteByIdUseCase {
   ) {}
 
   async execute(id: string): Promise<void> {
-    const file = await this.fileReadRepo.findById(id);
+    const file = await this.fileReadRepo.findFileById(id);
 
     if (!file) {
       throw new NotFoundException(`File with ID "${id}" not found`);
@@ -30,6 +30,6 @@ export class DeleteByIdUseCase {
       await this.storageWrite.delete(storagePath);
     }
 
-    await this.fileWriteRepo.deleteById(id);
+    await this.fileWriteRepo.deleteFileById(id);
   }
 }
