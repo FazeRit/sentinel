@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator';
 
-export class DeleteFileDto {
+export class DeleteUserByIdDto {
   @IsUUID()
   id: string;
 }

@@ -1,7 +1,7 @@
 import { IsUUID } from 'class-validator';
 
 // TODO: look for any solution for file
-export class UploadFileDto {
+export class CreateFileDto {
   file: any;
 
   @IsUUID()

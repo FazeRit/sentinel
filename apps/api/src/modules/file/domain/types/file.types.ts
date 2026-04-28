@@ -1,4 +1,4 @@
-export interface FileProps {
+export interface IFileProps {
   id: string;
   ownerId: string;
   name: string;
@@ -10,6 +10,9 @@ export interface FileProps {
   updatedAt: Date;
 }
 
-export type CreateFileProps = Omit<FileProps, 'id' | 'createdAt' | 'updatedAt'>;
+export type TCreateFileProps = Omit<
+  IFileProps,
+  'id' | 'createdAt' | 'updatedAt'
+>;
 
-export type RestoreFileProps = FileProps;
+export type TRestoreFileProps = IFileProps;

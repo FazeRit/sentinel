@@ -1,25 +1,25 @@
 import { randomUUID } from 'crypto';
-import { CreateFileProps, RestoreFileProps } from '../types/file.types';
+import { TCreateFileProps, TRestoreFileProps } from '../types/file.types';
 
 export class FileEntity {
   private readonly _id: string;
   private readonly _ownerId: string;
+  private readonly _labId: string | null;
   private readonly _name: string;
   private readonly _bytes: number;
   private readonly _mimetype: string;
   private _storagePath: string | null;
-  private readonly _labId: string | null;
   private readonly _createdAt: Date;
   private readonly _updatedAt: Date;
 
-  private constructor(props: RestoreFileProps) {
+  private constructor(props: TRestoreFileProps) {
     this._id = props.id;
     this._ownerId = props.ownerId;
+    this._labId = props.labId;
     this._name = props.name;
     this._bytes = props.bytes;
     this._mimetype = props.mimetype;
     this._storagePath = props.storagePath;
-    this._labId = props.labId;
     this._createdAt = props.createdAt;
     this._updatedAt = props.updatedAt;
   }
@@ -52,13 +52,12 @@ export class FileEntity {
     return this._updatedAt;
   }
 
-  public static create(props: CreateFileProps): FileEntity {
+  public static create(props: TCreateFileProps): FileEntity {
     const now = new Date();
 
     return new FileEntity({
       ...props,
       id: randomUUID(),
-      ownerId: props.ownerId,
       storagePath: props.storagePath ?? null,
       labId: props.labId ?? null,
       createdAt: now,
@@ -66,7 +65,7 @@ export class FileEntity {
     });
   }
 
-  public static restore(props: RestoreFileProps): FileEntity {
+  public static restore(props: TRestoreFileProps): FileEntity {
     return new FileEntity(props);
   }
 
