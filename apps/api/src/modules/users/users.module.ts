@@ -15,5 +15,11 @@ import { usersProviders } from './providers/users.provider';
     FindUserByIdUseCase,
     FindUsersUseCase,
   ],
+  exports: [
+    FindUserByIdUseCase,
+    FindUserByEmailUseCase,
+    CreateUserUseCase,
+    ...usersProviders,
+  ],
 })
 export class UsersModule {}

@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { UsersModule } from '../users/users.module';
+import { LoginUserUseCase } from './application/use-cases/login-user.usercase';
+import { RefreshTokenUseCase } from './application/use-cases/refresh-token.usecase';
+import { RegisterUserUseCase } from './application/use-cases/register-user.usecase';
+import { ValidateUserUseCase } from './application/use-cases/validate-user.usecase';
+import { JwtAccessStrategy } from './infra/strategies/jwt-access.strategy';
+import { JwtRefreshStrategy } from './infra/strategies/jwt-refresh.strategy';
+import { LocalStrategy } from './infra/strategies/local-auth.strategy';
 import { tokenProviders } from './providers/token.provider';
 
 @Module({
   imports: [
+    UsersModule,
     JwtModule.registerAsync({
       global: true,
       inject: [ConfigService],
@@ -17,7 +26,17 @@ import { tokenProviders } from './providers/token.provider';
       }),
     }),
   ],
-  providers: [...tokenProviders],
+  providers: [
+    ...tokenProviders,
+    LocalStrategy,
+    JwtAccessStrategy,
+    JwtRefreshStrategy,
+
+    LoginUserUseCase,
+    RefreshTokenUseCase,
+    RegisterUserUseCase,
+    ValidateUserUseCase,
+  ],
   exports: [...tokenProviders],
 })
 export class AuthModule {}

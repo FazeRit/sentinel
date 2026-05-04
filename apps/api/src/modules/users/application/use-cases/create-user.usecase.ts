@@ -15,7 +15,7 @@ export class CreateUserUseCase {
     name: string,
     email: string,
     passwordPlain: string,
-  ): Promise<void> {
+  ): Promise<UserEntity> {
     const hashedPassword = await argon2.hash(passwordPlain);
 
     const userEntity = UserEntity.create({
@@ -26,5 +26,7 @@ export class CreateUserUseCase {
     });
 
     await this.userWritePort.saveUser(userEntity);
+
+    return userEntity;
   }
 }

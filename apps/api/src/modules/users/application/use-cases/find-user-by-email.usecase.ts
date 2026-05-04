@@ -10,8 +10,8 @@ export class FindUserByEmailUseCase {
     private readonly userReadPort: UserReadRepository,
   ) {}
 
-  async execute(id: string): Promise<UserEntity> {
-    const user = await this.userReadPort.findUserByEmail(id);
+  async execute(email: string): Promise<UserEntity> {
+    const user = await this.userReadPort.findUserByEmail(email);
 
     if (!user) {
       throw new NotFoundException(`User with that id don't exists`);
