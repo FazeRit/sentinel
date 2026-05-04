@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { TokenProviderPort } from 'src/modules/auth/application/ports/token.port';
+import { TokenProviderPort } from 'src/modules/auth/application/ports/token-provider.port';
 import {
   IJwtPayload,
   ITokenPair,
@@ -20,34 +20,33 @@ export class JwtAdapterService implements TokenProviderPort {
       this.generateRefreshToken(payload),
     ]);
 
-    return {
-      accessToken,
-      refreshToken,
-    };
+    return { accessToken, refreshToken };
   }
 
   private async generateAccessToken(payload: IJwtPayload): Promise<string> {
     return this.jwtService.signAsync(payload, {
       expiresIn: '1h',
-      secret: this.config.getOrThrow('JWT_PUBLIC_SECRET'),
+      secret: this.config.getOrThrow<string>('JWT_PRIVATE_KEY'),
+      algorithm: 'RS256',
     });
   }
 
   private async generateRefreshToken(payload: IJwtPayload): Promise<string> {
-    return this.jwtService.signAsync(
-      {
-        sub: payload.sub,
-      },
-      {
-        secret: this.config.getOrThrow('JWT_PUBLIC_SECRET'),
-        expiresIn: '7d',
-      },
-    );
+    return this.jwtService.signAsync(payload, {
+      expiresIn: '7d',
+      secret: this.config.getOrThrow<string>('JWT_REFRESH_PRIVATE_KEY'),
+      algorithm: 'RS256',
+    });
   }
 
-  async verifyToken(token: string): Promise<IJwtPayload | null> {
+  async verifyToken<T extends object = IJwtPayload>(
+    token: string,
+  ): Promise<T | null> {
     try {
-      const payload = await this.jwtService.verifyAsync<IJwtPayload>(token);
+      const payload = await this.jwtService.verifyAsync<T>(token, {
+        secret: this.config.getOrThrow<string>('JWT_PUBLIC_KEY'),
+        algorithms: ['RS256'],
+      });
 
       return payload;
     } catch {
