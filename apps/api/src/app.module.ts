@@ -1,12 +1,14 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { CatchEverythingFilter } from './shared/filters/http-exception.filter';
+import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './config/winston/winston.config';
-import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './infra/prisma/prisma.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
+import { UsersModule } from './modules/users/users.module';
+import { CatchEverythingFilter } from './shared/filters/http-exception.filter';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { FileModule } from './modules/file/file.module';
     }),
     WinstonModule.forRoot(winstonConfig),
     FileModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [
