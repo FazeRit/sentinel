@@ -7,8 +7,8 @@ import { FindFilesUseCase } from './application/use-cases/find-files.usecase';
 import { CreateFileUseCase } from './application/use-cases/create-file.usecase';
 import { FileReadController } from './presentation/controllers/file-read.controller';
 import { FileWriteController } from './presentation/controllers/file-write.controller';
-import { fileProviders } from './presentation/providers/file.provider';
-import { memoryStorageProviders } from './presentation/providers/memory-storage.provider';
+import { fileProviders } from './providers/file.provider';
+import { memoryStorageProviders } from './providers/memory-storage.provider';
 
 @Module({
   imports: [MulterModule.register()],

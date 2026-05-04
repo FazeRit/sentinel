@@ -26,7 +26,7 @@ export class UserReadRepository implements UserReadPort {
     limit: number = 10,
     cursor?: string,
   ): Promise<PaginationResult<UserEntity>> {
-    const files = await this.prisma.user.findMany({
+    const users = await this.prisma.user.findMany({
       take: limit + 1,
       cursor: cursor
         ? {
@@ -39,14 +39,14 @@ export class UserReadRepository implements UserReadPort {
       },
     });
 
-    const hasNextPage = files.length > limit;
+    const hasNextPage = users.length > limit;
 
-    const items = hasNextPage ? files.slice(0, limit) : files;
+    const items = hasNextPage ? users.slice(0, limit) : users;
 
     const lastItem = items[items.length - 1];
     const nextCursor = hasNextPage ? lastItem.id : null;
 
-    const totalItems = await this.prisma.file.count();
+    const totalItems = await this.prisma.user.count();
 
     return {
       items: items.map(UserMapper.toEntity),
