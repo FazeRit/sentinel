@@ -15,6 +15,7 @@ model User {
 
   labs  Lab[]
   files File[]
+  sessions Session[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -63,4 +64,21 @@ model File {
   @@index([ownerId])
   @@index([labId])
   @@map("files")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  refreshToken String   @unique @map("refresh_token")
+  ip           String?
+  userAgent    String?  @map("user_agent")
+  expiresAt    DateTime @map("expires_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt
+  revokedAt    DateTime? @map("revoked_at")
+  
+  userId       String   @map("user_id")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
 }

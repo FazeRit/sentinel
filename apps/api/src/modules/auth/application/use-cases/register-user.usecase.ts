@@ -2,10 +2,9 @@ import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserUseCase } from 'src/modules/users/application/use-cases/create-user.usecase'; // 👈 Додаємо
 import { FindUserByEmailUseCase } from 'src/modules/users/application/use-cases/find-user-by-email.usecase';
 import { IAuthResult } from '../../domain/types/auth.types';
-import { RegisterUserDto } from '../../presentation/dto/request/register-user.dto';
 import {
-  TOKEN_PROVIDER_PORT,
-  TokenProviderPort,
+    TOKEN_PROVIDER_PORT,
+    TokenProviderPort,
 } from '../ports/token-provider.port'; // 👈 Використовуй порт, а не сервіс напряму
 
 @Injectable()
@@ -17,10 +16,12 @@ export class RegisterUserUseCase {
     private readonly tokenProvider: TokenProviderPort,
   ) {}
 
-  async execute(dto: RegisterUserDto): Promise<IAuthResult> {
-    const { name, email, password } = dto;
-
-    const existingUser = await this.findUserByEmailUseCase.execute(dto.email);
+  async execute(
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<IAuthResult> {
+    const existingUser = await this.findUserByEmailUseCase.execute(email);
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
     }

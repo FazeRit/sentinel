@@ -3,7 +3,7 @@ import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
 export interface IJwtPayload {
   sub: string;
   email: string;
-  role: string;
+  role?: string;
 }
 
 export interface ITokenPair {
