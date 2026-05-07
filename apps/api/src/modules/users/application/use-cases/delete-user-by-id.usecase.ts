@@ -16,7 +16,7 @@ export class DeleteUserByIdUseCase {
   async execute(id: string): Promise<void> {
     const user = await this.userReadRepo.findUserById(id);
     if (!user) {
-      throw new NotFoundException(`User with ID "${id}" not found`);
+      throw new NotFoundException(`User not found`);
     }
 
     await this.userWriteRepo.deleteUserById(id);

@@ -7,6 +7,7 @@ import { winstonConfig } from './config/winston/winston.config';
 import { PrismaModule } from './infra/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
+import { SessionModule } from './modules/sessions/session.module';
 import { UsersModule } from './modules/users/users.module';
 import { CatchEverythingFilter } from './shared/filters/http-exception.filter';
 
@@ -21,6 +22,7 @@ import { CatchEverythingFilter } from './shared/filters/http-exception.filter';
     FileModule,
     UsersModule,
     AuthModule,
+    SessionModule,
   ],
   controllers: [],
   providers: [
