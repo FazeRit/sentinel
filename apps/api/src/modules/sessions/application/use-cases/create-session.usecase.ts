@@ -12,14 +12,16 @@ export class CreateSessionUseCase {
     private readonly sessionWritePort: SessionWritePort,
   ) {}
 
-  async execution(
+  async execute(
     userId: string,
+    sessionId: string,
     refreshToken: string,
     expiresAt: Date,
     ip?: string,
     userAgent?: string,
   ): Promise<SessionEntity> {
     const sessionEntity = SessionEntity.create({
+      id: sessionId,
       userId: userId,
       refreshToken: refreshToken,
       expiresAt: expiresAt,
