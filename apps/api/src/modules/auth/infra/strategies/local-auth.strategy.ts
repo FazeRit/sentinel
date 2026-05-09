@@ -4,7 +4,7 @@ import { Strategy } from 'passport-local';
 import { ValidateUserUseCase } from '../../application/use-cases/validate-user.usecase';
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
+export class LocalAuthStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(private readonly validateUser: ValidateUserUseCase) {
     super({
       usernameField: 'email',

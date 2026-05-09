@@ -1,15 +1,14 @@
-import { randomUUID } from 'crypto';
 import { ISessionProps, TCreateSessionProps } from '../types/session.types';
 
 export class SessionEntity {
   private readonly _id: string;
   private readonly _userId: string;
-  private readonly _refreshToken: string;
+  private _refreshToken: string;
   private readonly _ip?: string;
   private readonly _userAgent?: string;
-  private readonly _expiresAt: Date;
+  private _expiresAt: Date;
   private readonly _createdAt: Date;
-  private readonly _updatedAt: Date;
+  private _updatedAt: Date;
   private _revokedAt?: Date | null;
 
   private constructor(props: ISessionProps) {
@@ -73,7 +72,7 @@ export class SessionEntity {
   static create(props: TCreateSessionProps): SessionEntity {
     return new SessionEntity({
       ...props,
-      id: randomUUID(),
+      id: props.id ?? crypto.randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
       revokedAt: null,
@@ -82,5 +81,18 @@ export class SessionEntity {
 
   static restore(props: ISessionProps): SessionEntity {
     return new SessionEntity(props);
+  }
+
+  public refresh(newToken: string, newExpiryDate: Date) {
+    if (this.isRevoked()) {
+      throw new Error('Cannot refresh a revoked session!');
+    }
+    if (this.isExpired()) {
+      throw new Error('Cannot refresh an expired session!');
+    }
+
+    this._refreshToken = newToken;
+    this._expiresAt = newExpiryDate;
+    this._updatedAt = new Date();
   }
 }

@@ -3,8 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ValidateRefreshTokenUseCase } from 'src/modules/sessions/application/use-cases/validate-refresh-token.usecase';
 import { FindUserByIdUseCase } from 'src/modules/users/application/use-cases/find-user-by-id.usecase';
-import { IJwtPayload } from '../../domain/types/auth.types';
+import { IAuthenticatedUser, IJwtPayload } from '../../domain/types/auth.types';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
@@ -14,30 +15,39 @@ export class JwtRefreshStrategy extends PassportStrategy(
   constructor(
     private readonly config: ConfigService,
     private readonly findUserByIdUseCase: FindUserByIdUseCase,
+    private readonly validateRefreshTokenUseCase: ValidateRefreshTokenUseCase,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => {
-          return request?.cookies?.['refreshToken'];
-        },
+        (request: Request) => request?.cookies?.['refreshToken'],
       ]),
       ignoreExpiration: false,
       secretOrKey: config.getOrThrow<string>('JWT_PRIVATE_SECRET'),
       algorithms: ['RS256'],
+      passReqToCallback: true,
     });
   }
 
-  async validate(payload: IJwtPayload) {
-    const { sub, email } = payload;
-    if (!sub || !email) {
-      throw new UnauthorizedException('Invalid token');
+  async validate(
+    req: Request,
+    payload: IJwtPayload,
+  ): Promise<IAuthenticatedUser> {
+    const refreshToken = req?.cookies?.['refreshToken'];
+
+    if (!refreshToken) {
+      throw new UnauthorizedException('Refresh token missing');
     }
+
+    const session =
+      await this.validateRefreshTokenUseCase.execute(refreshToken);
 
     const user = await this.findUserByIdUseCase.execute(payload.sub);
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
 
-    return user;
+    return Object.assign(user, {
+      sessionId: session.id,
+    });
   }
 }

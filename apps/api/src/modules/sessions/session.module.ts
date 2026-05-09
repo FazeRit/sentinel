@@ -5,6 +5,7 @@ import { FindSessionByRefreshTokenUseCase } from './application/use-cases/find-s
 import { RevokeSessionByIdUseCase } from './application/use-cases/revoke-session-by-id.usecase';
 import { RevokeSessionsByUserIdUseCase } from './application/use-cases/revoke-sessions-by-user-id.usecase';
 import { UpdateSessionUseCase } from './application/use-cases/update-session.usecase';
+import { ValidateRefreshTokenUseCase } from './application/use-cases/validate-refresh-token.usecase';
 import { sessionProviders } from './providers/session.provider';
 
 @Module({
@@ -16,6 +17,7 @@ import { sessionProviders } from './providers/session.provider';
     RevokeSessionByIdUseCase,
     RevokeSessionsByUserIdUseCase,
     UpdateSessionUseCase,
+    ValidateRefreshTokenUseCase,
   ],
   exports: [
     CreateSessionUseCase,
@@ -24,6 +26,7 @@ import { sessionProviders } from './providers/session.provider';
     RevokeSessionByIdUseCase,
     RevokeSessionsByUserIdUseCase,
     UpdateSessionUseCase,
+    ValidateRefreshTokenUseCase,
   ],
 })
 export class SessionModule {}

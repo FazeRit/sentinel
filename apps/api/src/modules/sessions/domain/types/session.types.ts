@@ -12,7 +12,7 @@ export interface ISessionProps {
 
 export type TCreateSessionProps = Omit<
   ISessionProps,
-  'id' | 'createdAt' | 'updatedAt' | 'revokedAt'
+  'createdAt' | 'updatedAt' | 'revokedAt'
 >;
 
 export type TRestoreSessionProps = ISessionProps;
