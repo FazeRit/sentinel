@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateSessionUseCase } from 'src/modules/sessions/application/use-cases/create-session.usecase';
 import { ITokenPair } from '../../domain/types/auth.types';
-import { JwtAdapterService } from '../../infra/services/jwt/jwt-adapter.service';
-import { TOKEN_PROVIDER_PORT } from '../ports/token-provider.port';
+import { JwtAdapterService } from '../../../sessions/infra/services/jwt/jwt-adapter.service';
+import { TOKEN_PROVIDER_PORT } from '../../../sessions/application/ports/token-provider.port';
 import { ValidateUserUseCase } from './validate-user.usecase';
 
 @Injectable()

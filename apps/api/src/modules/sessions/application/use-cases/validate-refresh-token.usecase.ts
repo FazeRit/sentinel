@@ -2,7 +2,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import {
     TOKEN_PROVIDER_PORT,
     TokenProviderPort,
-} from 'src/modules/auth/application/ports/token-provider.port';
+} from 'src/modules/sessions/application/ports/token-provider.port';
 import { IJwtPayload } from 'src/modules/auth/domain/types/auth.types';
 import { SessionEntity } from '../../domain/entities/session.entity';
 import { SESSION_READ_PORT, SessionReadPort } from '../ports/session-read.port';

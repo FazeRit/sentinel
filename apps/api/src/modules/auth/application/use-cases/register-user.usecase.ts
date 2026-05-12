@@ -6,7 +6,7 @@ import { IAuthResult } from '../../domain/types/auth.types';
 import {
   TOKEN_PROVIDER_PORT,
   TokenProviderPort,
-} from '../ports/token-provider.port';
+} from '../../../sessions/application/ports/token-provider.port';
 
 @Injectable()
 export class RegisterUserUseCase {
