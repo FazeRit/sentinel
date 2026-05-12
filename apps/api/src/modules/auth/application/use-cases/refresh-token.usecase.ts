@@ -30,19 +30,6 @@ export class RefreshTokenUseCase {
       payload.sessionId,
     );
 
-    if (!session || !session.isActive()) {
-      throw new UnauthorizedException('Session is no longer active');
-    }
-
-    if (session.isRevoked()) {
-      await this.revokeSessionsByUserIdUseCase.execute(session.userId);
-      throw new UnauthorizedException('Security breach: Token reuse detected');
-    }
-
-    if (session.isExpired()) {
-      throw new UnauthorizedException('Session expired');
-    }
-
     const tokens = await this.tokenProvider.generateTokens({
       sub: payload.sub,
       email: payload.email,
