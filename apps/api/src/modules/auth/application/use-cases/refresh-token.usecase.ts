@@ -1,12 +1,11 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { FindSessionByIdUseCase } from 'src/modules/sessions/application/use-cases/find-session-by-id.usecase';
-import { RevokeSessionsByUserIdUseCase } from 'src/modules/sessions/application/use-cases/revoke-sessions-by-user-id.usecase';
 import { UpdateSessionUseCase } from 'src/modules/sessions/application/use-cases/update-session.usecase';
 import { IJwtPayload, ITokenPair } from '../../domain/types/auth.types';
 import {
   TOKEN_PROVIDER_PORT,
   TokenProviderPort,
-} from '../ports/token-provider.port';
+} from '../../../sessions/application/ports/token-provider.port';
 
 // TODO: add check for ip and different stuff like that, improve somehow it
 @Injectable()
@@ -16,7 +15,6 @@ export class RefreshTokenUseCase {
     private readonly tokenProvider: TokenProviderPort,
     private readonly updateSessionUseCase: UpdateSessionUseCase,
     private readonly findSessionByIdUseCase: FindSessionByIdUseCase,
-    private readonly revokeSessionsByUserIdUseCase: RevokeSessionsByUserIdUseCase,
   ) {}
 
   async execute(refreshToken: string): Promise<ITokenPair> {

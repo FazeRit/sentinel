@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { TokenProviderPort } from 'src/modules/auth/application/ports/token-provider.port';
+import { TokenProviderPort } from 'src/modules/sessions/application/ports/token-provider.port';
 import {
   IJwtPayload,
   ITokenPair,

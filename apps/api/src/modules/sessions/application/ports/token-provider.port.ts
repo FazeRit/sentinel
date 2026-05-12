@@ -1,4 +1,4 @@
-import { IJwtPayload, ITokenPair } from '../../domain/types/auth.types';
+import { IJwtPayload, ITokenPair } from '../../../auth/domain/types/auth.types';
 
 export const TOKEN_PROVIDER_PORT = Symbol('TOKEN_PROVIDER_PORT');
 

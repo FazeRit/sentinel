@@ -11,7 +11,6 @@ import { JwtAccessStrategy } from './infra/strategies/jwt-access.strategy';
 import { JwtRefreshStrategy } from './infra/strategies/jwt-refresh.strategy';
 import { LocalAuthStrategy } from './infra/strategies/local-auth.strategy';
 import { AuthController } from './presentation/controllers/auth.controller';
-import { tokenProviders } from './providers/token.provider';
 
 @Module({
   imports: [
@@ -31,7 +30,6 @@ import { tokenProviders } from './providers/token.provider';
   ],
   controllers: [AuthController],
   providers: [
-    ...tokenProviders,
     LocalAuthStrategy,
     JwtAccessStrategy,
     JwtRefreshStrategy,
@@ -41,6 +39,6 @@ import { tokenProviders } from './providers/token.provider';
     RegisterUserUseCase,
     ValidateUserUseCase,
   ],
-  exports: [...tokenProviders],
+  exports: [],
 })
 export class AuthModule {}
