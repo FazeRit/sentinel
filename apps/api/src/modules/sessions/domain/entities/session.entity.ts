@@ -59,10 +59,6 @@ export class SessionEntity {
     return !!this._revokedAt;
   }
 
-  public isActive(): boolean {
-    return !this.isExpired() && !this.isRevoked();
-  }
-
   public revoke(): void {
     if (!this._revokedAt) {
       this._revokedAt = new Date();
