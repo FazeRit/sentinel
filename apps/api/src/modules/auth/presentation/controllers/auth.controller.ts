@@ -14,6 +14,8 @@ import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
 import { UserResponseDto } from 'src/modules/users/presentation/dto/response/user-response.dto';
 import { CurrentUser } from 'src/shared/decorators/current-user.decorator';
 import { Public } from 'src/shared/decorators/public.decorator';
+import { LongThrottler } from 'src/shared/decorators/throttlers/long-throttler.decorator';
+import { MediumThrottler } from 'src/shared/decorators/throttlers/medium-throttler.decorator';
 import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
 import { LoginUserUseCase } from '../../application/use-cases/login-user.usercase';
 import { RefreshTokenUseCase } from '../../application/use-cases/refresh-token.usecase';
@@ -24,6 +26,7 @@ import { JwtAccessGuard } from '../guards/jwt-access.guard';
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 
+// TODO: add user/me endpoint
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -35,6 +38,7 @@ export class AuthController {
   ) {}
 
   @Public()
+  @LongThrottler()
   @Post('register')
   async register(
     @Body() dto: RegisterUserDto,
@@ -71,6 +75,7 @@ export class AuthController {
   }
 
   @Public()
+  @LongThrottler()
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(
@@ -106,6 +111,7 @@ export class AuthController {
   }
 
   @Public()
+  @MediumThrottler()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refresh(
@@ -129,8 +135,9 @@ export class AuthController {
 
     return response;
   }
-
+  // TODO: think about logout use case
   @Post('logout')
+  @MediumThrottler()
   @UseGuards(JwtAccessGuard)
   async logout(
     @CurrentUser('sessionId') sessionId: string,
@@ -153,7 +160,9 @@ export class AuthController {
     return response;
   }
 
+  // TODO: think about logout all use case
   @Post('logout-all')
+  @MediumThrottler()
   @UseGuards(JwtAccessGuard)
   async logoutAll(
     @CurrentUser('id') userId: string,
