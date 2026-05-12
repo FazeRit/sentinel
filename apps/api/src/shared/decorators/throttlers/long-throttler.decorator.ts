@@ -4,6 +4,6 @@ export const LongThrottler = () =>
   Throttle({
     short: {
       ttl: minutes(1),
-      limit: 3,
+      limit: 5,
     },
   });
