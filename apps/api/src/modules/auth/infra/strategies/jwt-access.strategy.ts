@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
+import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { FindUserByIdUseCase } from 'src/modules/users/application/use-cases/find-user-by-id.usecase';
 import { IJwtPayload } from '../../domain/types/auth.types';
@@ -15,7 +16,10 @@ export class JwtAccessStrategy extends PassportStrategy(
     private readonly findUserByIdUseCase: FindUserByIdUseCase,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+        (request: Request) => request?.cookies?.['accessToken'],
+      ]),
       ignoreExpiration: false,
       secretOrKey: config.getOrThrow<string>('JWT_PUBLIC_SECRET'),
       algorithms: ['RS256'],
@@ -33,6 +37,8 @@ export class JwtAccessStrategy extends PassportStrategy(
       throw new UnauthorizedException('User not found');
     }
 
-    return user;
+    return Object.assign(user, {
+      sessionId: payload.sessionId,
+    });
   }
 }

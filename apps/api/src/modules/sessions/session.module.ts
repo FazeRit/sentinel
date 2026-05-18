@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TOKEN_PROVIDER_PORT } from './application/ports/token-provider.port';
 import { CreateSessionUseCase } from './application/use-cases/create-session.usecase';
 import { FindSessionByIdUseCase } from './application/use-cases/find-session-by-id.usecase';
-import { FindSessionByRefreshTokenUseCase } from './application/use-cases/find-session-by-refresh-token..usecase';
+import { FindSessionByRefreshTokenUseCase } from './application/use-cases/find-session-by-refresh-token.usecase';
 import { RevokeSessionByIdUseCase } from './application/use-cases/revoke-session-by-id.usecase';
 import { RevokeSessionsByUserIdUseCase } from './application/use-cases/revoke-sessions-by-user-id.usecase';
 import { UpdateSessionUseCase } from './application/use-cases/update-session.usecase';

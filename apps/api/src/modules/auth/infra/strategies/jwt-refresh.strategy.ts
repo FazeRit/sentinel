@@ -22,7 +22,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
         (request: Request) => request?.cookies?.['refreshToken'],
       ]),
       ignoreExpiration: false,
-      secretOrKey: config.getOrThrow<string>('JWT_PRIVATE_SECRET'),
+      secretOrKey: config.getOrThrow<string>('JWT_PUBLIC_SECRET'),
       algorithms: ['RS256'],
       passReqToCallback: true,
     });
@@ -33,7 +33,6 @@ export class JwtRefreshStrategy extends PassportStrategy(
     payload: IJwtPayload,
   ): Promise<IAuthenticatedUser> {
     const refreshToken = req?.cookies?.['refreshToken'];
-
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token missing');
     }
