@@ -11,6 +11,7 @@ export class FileMapper {
       bytes: model.bytes,
       mimetype: model.mimetype,
       storagePath: model.storagePath,
+      deletedAt: model.deletedAt,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
     });
@@ -25,6 +26,7 @@ export class FileMapper {
       mimetype: fileEntity.mimetype,
       bytes: fileEntity.bytes,
       storagePath: fileEntity.storagePath,
+      deletedAt: fileEntity.deletedAt,
       createdAt: fileEntity.createdAt,
       updatedAt: fileEntity.updatedAt,
     };

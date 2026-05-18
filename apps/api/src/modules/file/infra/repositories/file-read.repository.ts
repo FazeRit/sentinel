@@ -35,6 +35,7 @@ export class FileReadRepository implements FileReadPort {
       where: {
         labId,
         ownerId,
+        deletedAt: null,
       },
       orderBy: {
         id: 'asc',
@@ -63,5 +64,29 @@ export class FileReadRepository implements FileReadPort {
         totalItems,
       ),
     };
+  }
+
+  async findFilesByIds(ids: Array<string>): Promise<FileEntity[]> {
+    const files = await this.prisma.file.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return files.map(FileMapper.toEntity);
+  }
+
+  async findExpiredFiles(thesholdDate: Date): Promise<FileEntity[]> {
+    const files = await this.prisma.file.findMany({
+      where: {
+        deletedAt: {
+          lte: thesholdDate,
+        },
+      },
+    });
+
+    return files.map(FileMapper.toEntity);
   }
 }

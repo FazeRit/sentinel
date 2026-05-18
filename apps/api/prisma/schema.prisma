@@ -13,8 +13,8 @@ model User {
   password String
   role     Role   @default(USER)
 
-  labs  Lab[]
-  files File[]
+  labs     Lab[]
+  files    File[]
   sessions Session[]
 
   createdAt DateTime @default(now())
@@ -57,27 +57,28 @@ model File {
   owner   User   @relation(fields: [ownerId], references: [id])
   ownerId String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  @@unique([ownerId, name])
+  @@unique([ownerId, name, deletedAt])
   @@index([ownerId])
   @@index([labId])
   @@map("files")
 }
 
 model Session {
-  id           String   @id @default(uuid())
-  refreshToken String   @unique @map("refresh_token")
+  id           String    @id @default(uuid())
+  refreshToken String    @unique @map("refresh_token")
   ip           String?
-  userAgent    String?  @map("user_agent")
-  expiresAt    DateTime @map("expires_at")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt
+  userAgent    String?   @map("user_agent")
+  expiresAt    DateTime  @map("expires_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt
   revokedAt    DateTime? @map("revoked_at")
-  
-  userId       String   @map("user_id")
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("sessions")

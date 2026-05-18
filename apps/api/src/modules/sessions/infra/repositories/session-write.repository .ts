@@ -11,21 +11,12 @@ export class SessionWriteRepository implements SessionWritePort {
   async saveSession(sessionEntity: SessionEntity): Promise<SessionEntity> {
     const model = SessionMapper.toModel(sessionEntity);
 
-    const session = await this.prisma.session.create({
-      data: model,
-    });
-
-    return SessionMapper.toEntity(session);
-  }
-
-  async updateSession(sessionEntity: SessionEntity): Promise<SessionEntity> {
-    const model = SessionMapper.toModel(sessionEntity);
-
-    const session = await this.prisma.session.update({
+    const session = await this.prisma.session.upsert({
       where: {
         id: model.id,
       },
-      data: model,
+      create: model,
+      update: model,
     });
 
     return SessionMapper.toEntity(session);
@@ -43,18 +34,6 @@ export class SessionWriteRepository implements SessionWritePort {
     await this.prisma.session.deleteMany({
       where: {
         userId: userId,
-      },
-    });
-  }
-
-  async revokeSessionById(id: string): Promise<void> {
-    await this.prisma.session.update({
-      where: {
-        id: id,
-        revokedAt: null,
-      },
-      data: {
-        revokedAt: new Date(),
       },
     });
   }
