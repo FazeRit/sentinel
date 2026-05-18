@@ -7,7 +7,7 @@ import { FILE_WRITE_PORT } from '../ports/file-write.port';
 import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
 
 @Injectable()
-export class DeleteFilesUseCase {
+export class SoftDeleteFilesUseCase {
   constructor(
     @Inject(FILE_WRITE_PORT)
     private readonly fileWriteRepo: FileWriteRepository,
@@ -30,12 +30,6 @@ export class DeleteFilesUseCase {
       );
     }
 
-    for (const file of files) {
-      const { storagePath } = file;
-
-      if (storagePath) await this.storageWrite.delete(storagePath);
-    }
-
-    await this.fileWriteRepo.deleteFiles(labId, ownerId);
+    await this.fileWriteRepo.softDeleteFiles(labId, ownerId);
   }
 }

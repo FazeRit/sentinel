@@ -9,6 +9,7 @@ export class FileEntity {
   private readonly _bytes: number;
   private readonly _mimetype: string;
   private _storagePath: string | null;
+  private _deletedAt: Date | null;
   private readonly _createdAt: Date;
   private readonly _updatedAt: Date;
 
@@ -20,8 +21,23 @@ export class FileEntity {
     this._bytes = props.bytes;
     this._mimetype = props.mimetype;
     this._storagePath = props.storagePath;
-    this._createdAt = props.createdAt;
-    this._updatedAt = props.updatedAt;
+    this._deletedAt = props.deletedAt || null;
+    this._createdAt = new Date();
+    this._updatedAt = new Date();
+  }
+
+  public static create(props: TCreateFileProps): FileEntity {
+    const now = new Date();
+
+    return new FileEntity({
+      ...props,
+      id: randomUUID(),
+      storagePath: props.storagePath ?? null,
+      labId: props.labId ?? null,
+      deletedAt: null,
+      createdAt: now,
+      updatedAt: now,
+    });
   }
 
   public get id(): string {
@@ -42,6 +58,9 @@ export class FileEntity {
   public get storagePath(): string | null {
     return this._storagePath;
   }
+  public get deletedAt(): Date | null {
+    return this._deletedAt;
+  }
   public get labId(): string | null {
     return this._labId;
   }
@@ -52,27 +71,23 @@ export class FileEntity {
     return this._updatedAt;
   }
 
-  public static create(props: TCreateFileProps): FileEntity {
-    const now = new Date();
-
-    return new FileEntity({
-      ...props,
-      id: randomUUID(),
-      storagePath: props.storagePath ?? null,
-      labId: props.labId ?? null,
-      createdAt: now,
-      updatedAt: now,
-    });
-  }
-
   public static restore(props: TRestoreFileProps): FileEntity {
     return new FileEntity(props);
+  }
+
+  public softDelete(): void {
+    if (this.isDeleted()) return;
+    this._deletedAt = new Date();
   }
 
   public setStoragePath(path: string): void {
     if (!path) throw new Error('Storage path is required');
 
     this._storagePath = path;
+  }
+
+  public isDeleted(): boolean {
+    return this._deletedAt !== null;
   }
 
   public isPdf(): boolean {

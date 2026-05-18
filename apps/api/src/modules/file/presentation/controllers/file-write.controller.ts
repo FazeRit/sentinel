@@ -12,8 +12,8 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
 import { CreateFileUseCase } from '../../application/use-cases/create-file.usecase';
-import { DeleteFileByIdUseCase } from '../../application/use-cases/delete-file-by-id.usecase';
-import { DeleteFilesUseCase } from '../../application/use-cases/delete-files.usecase';
+import { SoftDeleteFileByIdUseCase } from '../../application/use-cases/soft-delete-file-by-id.usecase';
+import { SoftDeleteFilesUseCase } from '../../application/use-cases/soft-delete-files.usecase';
 import { CreateFileDto } from '../dto/request/create-file.dto';
 import { DeleteFileByIdDto } from '../dto/request/delete-file-by-id.dto';
 import { DeleteFilesDto } from '../dto/request/delete-files.dto';
@@ -23,8 +23,8 @@ import { FileResponseDto } from '../dto/response/file-response.dto';
 export class FileWriteController {
   constructor(
     private readonly createFileUseCase: CreateFileUseCase,
-    private readonly deleteFileByIdUseCase: DeleteFileByIdUseCase,
-    private readonly deleteFilesUseCase: DeleteFilesUseCase,
+    private readonly softDeleteFileByIdUseCase: SoftDeleteFileByIdUseCase,
+    private readonly softDeleteFilesUseCase: SoftDeleteFilesUseCase,
   ) {}
 
   // TODO: think about getting with decorators message and status for api response dto, and using auto interceptor to skip this creepy creating response class every time
@@ -57,7 +57,7 @@ export class FileWriteController {
   ): Promise<ApiResponseDto<null>> {
     const { id } = dto;
 
-    await this.deleteFileByIdUseCase.execute(id);
+    await this.softDeleteFileByIdUseCase.execute(id);
 
     const response = new ApiResponseDto<null>({
       data: null,
@@ -76,7 +76,7 @@ export class FileWriteController {
   ): Promise<ApiResponseDto<null>> {
     const { labId, ownerId } = dto;
 
-    await this.deleteFilesUseCase.execute(labId, ownerId);
+    await this.softDeleteFilesUseCase.execute(labId, ownerId);
 
     const response = new ApiResponseDto<null>({
       data: null,

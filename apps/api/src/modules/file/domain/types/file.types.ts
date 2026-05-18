@@ -6,13 +6,14 @@ export interface IFileProps {
   mimetype: string;
   storagePath: string | null;
   labId: string | null;
+  deletedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export type TCreateFileProps = Omit<
   IFileProps,
-  'id' | 'createdAt' | 'updatedAt'
+  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >;
 
 export type TRestoreFileProps = IFileProps;

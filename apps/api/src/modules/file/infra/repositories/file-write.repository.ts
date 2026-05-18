@@ -11,41 +11,38 @@ export class FileWriteRepository implements FileWritePort {
   async saveFile(fileEntity: FileEntity): Promise<FileEntity> {
     const model = FileMapper.toModel(fileEntity);
 
-    const file = await this.prisma.file.create({
-      data: model,
-    });
-
-    return FileMapper.toEntity(file);
-  }
-
-  async updateFile(fileEntity: FileEntity): Promise<FileEntity> {
-    const model = FileMapper.toModel(fileEntity);
-
-    const file = await this.prisma.file.update({
+    const file = await this.prisma.file.upsert({
       where: {
         id: model.id,
       },
-      data: model,
+      create: model,
+      update: model,
     });
 
     return FileMapper.toEntity(file);
   }
 
-  async deleteFileById(id: string): Promise<void> {
-    await this.prisma.file.delete({
+  async softDeleteFiles(labId: string, ownerId?: string): Promise<void> {
+    await this.prisma.file.updateMany({
       where: {
-        id,
+        labId,
+        deletedAt: null,
+        ...(ownerId && {
+          ownerId,
+        }),
+      },
+      data: {
+        deletedAt: new Date(),
       },
     });
   }
 
-  async deleteFiles(labId: string, ownerId?: string): Promise<void> {
+  async hardDeleteFiles(ids: Array<string>): Promise<void> {
     await this.prisma.file.deleteMany({
       where: {
-        labId,
-        ...(ownerId && {
-          ownerId,
-        }),
+        id: {
+          in: ids,
+        },
       },
     });
   }

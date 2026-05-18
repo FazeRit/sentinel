@@ -11,4 +11,6 @@ export abstract class FileReadPort {
     ownerId?: string,
     cursor?: string,
   ): Promise<PaginationResult<FileEntity>>;
+  abstract findFilesByIds(ids: Array<string>): Promise<FileEntity[]>;
+  abstract findExpiredFiles(thresholdDate: Date): Promise<FileEntity[]>;
 }
