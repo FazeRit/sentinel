@@ -59,7 +59,7 @@ export class AuthController {
     );
 
     this.setAccessTokenCookie(res, tokens.accessToken);
-    this.setRefreshTokenCookie(res, tokens.accessToken);
+    this.setRefreshTokenCookie(res, tokens.refreshToken);
 
     const userDto = UserResponseDto.fromEntity(user);
 
@@ -74,7 +74,6 @@ export class AuthController {
     return response;
   }
 
-  @Public()
   @LongThrottler()
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -110,14 +109,16 @@ export class AuthController {
     return response;
   }
 
-  @Public()
   @MediumThrottler()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refresh(
-    @Res({ passthrough: true }) res: Response,
+    @Res({
+      passthrough: true,
+    })
+    res: Response,
     @Req() req: Request,
-  ): Promise<ApiResponseDto<{ accessToken: string }>> {
+  ): Promise<ApiResponseDto<null>> {
     const refreshToken = req.cookies['refreshToken'];
 
     const tokens = await this.refreshTokenUseCase.execute(refreshToken);
@@ -126,7 +127,7 @@ export class AuthController {
     this.setRefreshTokenCookie(res, tokens.refreshToken);
 
     const response = new ApiResponseDto({
-      data: { accessToken: tokens.accessToken },
+      data: null,
       status: HttpStatus.OK,
       message: 'Token refreshed successfully',
       timestamp: new Date(),

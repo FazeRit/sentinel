@@ -26,7 +26,7 @@ export class JwtAdapterService implements TokenProviderPort {
   private async generateAccessToken(payload: IJwtPayload): Promise<string> {
     return this.jwtService.signAsync(payload, {
       expiresIn: '1h',
-      secret: this.config.getOrThrow<string>('JWT_PRIVATE_KEY'),
+      secret: this.config.getOrThrow<string>('JWT_PRIVATE_SECRET'),
       algorithm: 'RS256',
     });
   }
@@ -34,7 +34,7 @@ export class JwtAdapterService implements TokenProviderPort {
   private async generateRefreshToken(payload: IJwtPayload): Promise<string> {
     return this.jwtService.signAsync(payload, {
       expiresIn: '7d',
-      secret: this.config.getOrThrow<string>('JWT_REFRESH_PRIVATE_KEY'),
+      secret: this.config.getOrThrow<string>('JWT_PRIVATE_SECRET'),
       algorithm: 'RS256',
     });
   }
@@ -44,7 +44,7 @@ export class JwtAdapterService implements TokenProviderPort {
   ): Promise<T | null> {
     try {
       const payload = await this.jwtService.verifyAsync<T>(token, {
-        secret: this.config.getOrThrow<string>('JWT_PUBLIC_KEY'),
+        secret: this.config.getOrThrow<string>('JWT_PUBLIC_SECRET'),
         algorithms: ['RS256'],
       });
 

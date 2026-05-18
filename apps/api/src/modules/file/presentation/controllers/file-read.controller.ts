@@ -1,4 +1,12 @@
-import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAccessGuard } from 'src/modules/auth/presentation/guards/jwt-access.guard';
 import { ApiPaginationMetaResponseDto } from 'src/shared/dto/response/api-paginition-meta-response.dto';
 import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
 import { FindFileByIdUseCase } from '../../application/use-cases/find-file-by-id.usecase';
@@ -7,6 +15,7 @@ import { FindFileByIdDto } from '../dto/request/find-file-by-id.dto';
 import { FindFilesDto } from '../dto/request/find-files.dto';
 import { FileResponseDto } from '../dto/response/file-response.dto';
 
+@UseGuards(JwtAccessGuard)
 @Controller('files')
 export class FileReadController {
   constructor(

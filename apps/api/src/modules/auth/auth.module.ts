@@ -20,8 +20,8 @@ import { AuthController } from './presentation/controllers/auth.controller';
       global: true,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        privateKey: configService.get<string>('JWT_PRIVATE_KEY'),
-        publicKey: configService.get<string>('JWT_PUBLIC_KEY'),
+        privateKey: configService.get<string>('JWT_PRIVATE_SECRET'),
+        publicKey: configService.get<string>('JWT_PUBLIC_SECRET'),
         signOptions: {
           algorithm: 'RS256',
         },
