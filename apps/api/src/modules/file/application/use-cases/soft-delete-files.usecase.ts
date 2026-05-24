@@ -1,24 +1,19 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { FileReadRepository } from '../../infra/repositories/file-read.repository';
-import { FileWriteRepository } from '../../infra/repositories/file-write.repository';
-import { LocalStorageWriteService } from '../../infra/services/local-storage-write.service';
-import { FILE_READ_PORT } from '../ports/file-read.port';
-import { FILE_WRITE_PORT } from '../ports/file-write.port';
-import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
+import { FILE_READ_PORT, FileReadPort } from '../ports/file-read.port';
+import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
 
 @Injectable()
 export class SoftDeleteFilesUseCase {
   constructor(
     @Inject(FILE_WRITE_PORT)
-    private readonly fileWriteRepo: FileWriteRepository,
+    private readonly fileWriteRepo: FileWritePort,
     @Inject(FILE_READ_PORT)
-    private readonly fileReadRepo: FileReadRepository,
-    @Inject(MEMORY_STORAGE_WRITE_PORT)
-    private readonly storageWrite: LocalStorageWriteService,
+    private readonly fileReadRepo: FileReadPort,
   ) {}
 
   async execute(labId: string, ownerId?: string): Promise<void> {
     const { items: files } = await this.fileReadRepo.findFiles(
+      1000,
       undefined,
       labId,
       ownerId,

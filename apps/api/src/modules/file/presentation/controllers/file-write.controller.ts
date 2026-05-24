@@ -1,13 +1,13 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    HttpStatus,
-    Param,
-    Post,
-    Query,
-    UploadedFile,
-    UseInterceptors,
+  Body,
+  Controller,
+  Delete,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';

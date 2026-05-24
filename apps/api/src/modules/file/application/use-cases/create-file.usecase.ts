@@ -5,9 +5,11 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { FileEntity } from '../../domain/entities/file.entity';
-import { LocalStorageWriteService } from '../../infra/services/local-storage-write.service';
 import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
-import { MEMORY_STORAGE_WRITE_PORT } from '../ports/memory-storage-write.port';
+import {
+  MEMORY_STORAGE_WRITE_PORT,
+  MemoryStorageWritePort,
+} from '../ports/memory-storage-write.port';
 
 @Injectable()
 export class CreateFileUseCase {
@@ -18,7 +20,7 @@ export class CreateFileUseCase {
     @Inject(FILE_WRITE_PORT)
     private readonly fileWriteRepo: FileWritePort,
     @Inject(MEMORY_STORAGE_WRITE_PORT)
-    private readonly storageWrite: LocalStorageWriteService,
+    private readonly storageWrite: MemoryStorageWritePort,
   ) {}
 
   async execute(labId: string, file: Express.Multer.File): Promise<FileEntity> {
