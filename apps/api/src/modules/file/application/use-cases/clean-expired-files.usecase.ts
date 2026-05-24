@@ -18,7 +18,6 @@ export class CleanExpiredFilesUseCase {
 
     const expiredFiles =
       await this.fileReadRepo.findExpiredFiles(thresholdDate);
-
     if (!expiredFiles || expiredFiles.length === 0) {
       return;
     }

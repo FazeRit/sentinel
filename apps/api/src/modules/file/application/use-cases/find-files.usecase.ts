@@ -1,21 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PaginationResult } from 'src/shared/dto/response/pagination-result.dto';
 import { FileEntity } from '../../domain/entities/file.entity';
-import { FileReadRepository } from '../../infra/repositories/file-read.repository';
-import { FILE_READ_PORT } from '../ports/file-read.port';
+import { FILE_READ_PORT, FileReadPort } from '../ports/file-read.port';
 
 @Injectable()
 export class FindFilesUseCase {
   constructor(
     @Inject(FILE_READ_PORT)
-    private readonly fileReadRepo: FileReadRepository,
+    private readonly fileReadRepo: FileReadPort,
   ) {}
 
   async execute(
     labId?: string,
     ownerId?: string,
     cursor?: string,
-    limit?: number,
+    limit: number = 10,
   ): Promise<PaginationResult<FileEntity>> {
     const { items, meta } = await this.fileReadRepo.findFiles(
       limit,

@@ -13,6 +13,6 @@ export class UpdateSessionUseCase {
   ) {}
 
   async execute(session: SessionEntity): Promise<SessionEntity> {
-    return await this.sessionWritePort.updateSession(session);
+    return await this.sessionWritePort.saveSession(session);
   }
 }

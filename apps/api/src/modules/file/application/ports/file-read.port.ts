@@ -6,7 +6,7 @@ export const FILE_READ_PORT = Symbol('file-read-port');
 export abstract class FileReadPort {
   abstract findFileById(id: string): Promise<FileEntity | null>;
   abstract findFiles(
-    limit: number,
+    limit?: number,
     labId?: string,
     ownerId?: string,
     cursor?: string,
