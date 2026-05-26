@@ -1,5 +1,10 @@
 import { randomUUID } from 'crypto';
-import { TCreateFileProps, TRestoreFileProps } from '../types/file.types';
+import {
+  FileStatus,
+  PdfMetadata,
+  TCreateFileProps,
+  TRestoreFileProps,
+} from '../types/file.types';
 
 export class FileEntity {
   private readonly _id: string;
@@ -9,6 +14,10 @@ export class FileEntity {
   private readonly _bytes: number;
   private readonly _mimetype: string;
   private _storagePath: string | null;
+  private _status: FileStatus;
+  private _pageCount: number | null;
+  private _title: string | null;
+  private _author: string | null;
   private _deletedAt: Date | null;
   private readonly _createdAt: Date;
   private readonly _updatedAt: Date;
@@ -21,9 +30,13 @@ export class FileEntity {
     this._bytes = props.bytes;
     this._mimetype = props.mimetype;
     this._storagePath = props.storagePath;
+    this._status = props.status;
+    this._pageCount = props.pageCount;
+    this._title = props.title;
+    this._author = props.author;
     this._deletedAt = props.deletedAt || null;
-    this._createdAt = new Date();
-    this._updatedAt = new Date();
+    this._createdAt = props.createdAt;
+    this._updatedAt = props.updatedAt;
   }
 
   public static create(props: TCreateFileProps): FileEntity {
@@ -34,45 +47,85 @@ export class FileEntity {
       id: randomUUID(),
       storagePath: props.storagePath ?? null,
       labId: props.labId ?? null,
+      status: FileStatus.UPLOADED,
+      pageCount: null,
+      title: null,
+      author: null,
       deletedAt: null,
       createdAt: now,
       updatedAt: now,
     });
   }
 
+  public static restore(props: TRestoreFileProps): FileEntity {
+    return new FileEntity(props);
+  }
+
   public get id(): string {
     return this._id;
   }
+
   public get ownerId(): string {
     return this._ownerId;
   }
-  public get name(): string {
-    return this._name;
-  }
-  public get bytes(): number {
-    return this._bytes;
-  }
-  public get mimetype(): string {
-    return this._mimetype;
-  }
-  public get storagePath(): string | null {
-    return this._storagePath;
-  }
-  public get deletedAt(): Date | null {
-    return this._deletedAt;
-  }
+
   public get labId(): string | null {
     return this._labId;
   }
+
+  public get name(): string {
+    return this._name;
+  }
+
+  public get bytes(): number {
+    return this._bytes;
+  }
+
+  public get mimetype(): string {
+    return this._mimetype;
+  }
+
+  public get storagePath(): string | null {
+    return this._storagePath;
+  }
+
+  public get status(): FileStatus {
+    return this._status;
+  }
+
+  public get pageCount(): number | null {
+    return this._pageCount;
+  }
+
+  public get title(): string | null {
+    return this._title;
+  }
+
+  public get author(): string | null {
+    return this._author;
+  }
+
+  public get deletedAt(): Date | null {
+    return this._deletedAt;
+  }
+
   public get createdAt(): Date {
     return this._createdAt;
   }
+
   public get updatedAt(): Date {
     return this._updatedAt;
   }
 
-  public static restore(props: TRestoreFileProps): FileEntity {
-    return new FileEntity(props);
+  public setStoragePath(path: string): void {
+    if (!path) throw new Error('Storage path is required');
+    this._storagePath = path;
+  }
+
+  public setMetadata(meta: PdfMetadata): void {
+    this._pageCount = meta.pageCount;
+    this._title = meta.title;
+    this._author = meta.author;
   }
 
   public softDelete(): void {
@@ -80,10 +133,16 @@ export class FileEntity {
     this._deletedAt = new Date();
   }
 
-  public setStoragePath(path: string): void {
-    if (!path) throw new Error('Storage path is required');
+  public markAsProcessing(): void {
+    this._status = FileStatus.PROCESSING;
+  }
 
-    this._storagePath = path;
+  public markAsReady(): void {
+    this._status = FileStatus.READY;
+  }
+
+  public markAsFailed(): void {
+    this._status = FileStatus.FAILED;
   }
 
   public isDeleted(): boolean {

@@ -1,4 +1,4 @@
-import { IsUUID } from 'class-validator';
+import { IsUUID, IsString, IsOptional } from 'class-validator';
 
 // TODO: look for any solution for file
 export class CreateFileDto {
@@ -6,4 +6,8 @@ export class CreateFileDto {
 
   @IsUUID()
   labId: string;
+
+  @IsString()
+  @IsOptional()
+  originalName?: string;
 }

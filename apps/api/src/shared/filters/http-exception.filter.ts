@@ -29,22 +29,29 @@ export class CatchEverythingFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const message = this.getErrorMessage(exception);
+    const userMessage = this.getUserFriendlyMessage(exception);
+
+    const logMessage =
+      exception instanceof Error
+        ? `${exception.message}\n${exception.stack}`
+        : typeof exception === 'string'
+          ? exception
+          : JSON.stringify(exception);
+
+    this.logger.error(logMessage);
 
     const responseBody = new ApiResponseDto<null>({
       data: null,
       status: status,
-      message: message,
+      message: userMessage,
       timestamp: new Date(),
       path: request.url,
     });
 
-    this.logger.error(message);
-
     httpAdapter.reply(ctx.getResponse(), responseBody, status);
   }
 
-  private getErrorMessage(exception: unknown): string {
+  private getUserFriendlyMessage(exception: unknown): string {
     if (exception instanceof HttpException) {
       const response = exception.getResponse();
 
@@ -58,8 +65,6 @@ export class CatchEverythingFilter implements ExceptionFilter {
       return exception.message;
     }
 
-    return exception instanceof Error
-      ? exception.message
-      : 'Internal server error';
+    return 'Internal server error';
   }
 }

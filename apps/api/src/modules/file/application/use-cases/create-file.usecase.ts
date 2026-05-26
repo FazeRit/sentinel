@@ -1,8 +1,9 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
   InternalServerErrorException,
+  Inject,
+  Logger,
 } from '@nestjs/common';
 import { FileEntity } from '../../domain/entities/file.entity';
 import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
@@ -10,10 +11,12 @@ import {
   MEMORY_STORAGE_WRITE_PORT,
   MemoryStorageWritePort,
 } from '../ports/memory-storage-write.port';
+import { EnqueueFileProcessingUseCase } from './enqueue-file-processing.usecase';
 
 @Injectable()
 export class CreateFileUseCase {
   private readonly MAX_SIZE_MB: number = 15;
+  private readonly logger = new Logger(CreateFileUseCase.name);
 
   //TODO: change to S3 upload
   constructor(
@@ -21,11 +24,16 @@ export class CreateFileUseCase {
     private readonly fileWriteRepo: FileWritePort,
     @Inject(MEMORY_STORAGE_WRITE_PORT)
     private readonly storageWrite: MemoryStorageWritePort,
+    private readonly enqueueFileProcessingUseCase: EnqueueFileProcessingUseCase,
   ) {}
 
-  async execute(labId: string, file: Express.Multer.File): Promise<FileEntity> {
+  async execute(
+    labId: string,
+    ownerId: string,
+    file: Express.Multer.File,
+  ): Promise<FileEntity> {
     const fileEntity = FileEntity.create({
-      ownerId: labId,
+      ownerId,
       name: file.originalname,
       bytes: file.size,
       mimetype: file.mimetype,
@@ -56,10 +64,15 @@ export class CreateFileUseCase {
 
       await this.fileWriteRepo.saveFile(fileEntity);
 
+      await this.enqueueFileProcessingUseCase.execute(fileEntity.id);
+
       return fileEntity;
     } catch (error) {
+      this.logger.error(
+        `Failed to process file upload: ${error.stack || error.message || error}`,
+      );
       throw new InternalServerErrorException(
-        `Failed to process file upload: ${error.message}`,
+        'Failed to process file upload due to an internal error.',
       );
     }
   }
