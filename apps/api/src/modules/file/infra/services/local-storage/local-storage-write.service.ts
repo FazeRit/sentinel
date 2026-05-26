@@ -3,9 +3,9 @@ import { unlink } from 'fs/promises';
 import { pipeline } from 'stream/promises';
 import { homedir } from 'os';
 import { join } from 'path';
-import { MemoryStorageWritePort } from '../../application/ports/memory-storage-write.port';
 import { existsSync, mkdirSync, createWriteStream } from 'fs';
 import { Readable } from 'stream';
+import { MemoryStorageWritePort } from 'src/modules/file/application/ports/memory-storage-write.port';
 
 @Injectable()
 export class LocalStorageWriteService implements MemoryStorageWritePort {

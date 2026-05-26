@@ -44,12 +44,23 @@ model Lab {
   @@map("labs")
 }
 
+enum FileStatus {
+  UPLOADED
+  PROCESSING
+  READY
+  FAILED
+}
+
 model File {
   id          String  @id @default(uuid())
   name        String
   bytes       Int
   mimetype    String
   storagePath String?
+  status      FileStatus @default(UPLOADED)
+  pageCount   Int?
+  title       String?    @map("pdf_title")
+  author      String?    @map("pdf_author")
 
   lab   Lab?    @relation(fields: [labId], references: [id])
   labId String?

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { MemoryStorageReadPort } from '../../application/ports/memory-storage-read.port';
 import { Readable } from 'stream';
 import { access } from 'fs/promises';
 import { createReadStream } from 'fs';
+import { MemoryStorageReadPort } from 'src/modules/file/application/ports/memory-storage-read.port';
 
 @Injectable()
 export class LocalStorageReadService implements MemoryStorageReadPort {

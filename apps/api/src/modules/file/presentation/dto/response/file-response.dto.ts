@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
 import { FileEntity } from '../../../domain/entities/file.entity';
+import { FileStatus } from '../../../domain/types/file.types';
 
 export class FileResponseDto {
   @Expose()
@@ -24,6 +25,18 @@ export class FileResponseDto {
   storagePath: string | null;
 
   @Expose()
+  status: FileStatus;
+
+  @Expose()
+  pageCount: number | null;
+
+  @Expose()
+  title: string | null;
+
+  @Expose()
+  author: string | null;
+
+  @Expose()
   createdAt: Date;
 
   @Expose()
@@ -42,6 +55,10 @@ export class FileResponseDto {
       storagePath: entity.storagePath,
       bytes: entity.bytes,
       mimetype: entity.mimetype,
+      status: entity.status,
+      pageCount: entity.pageCount,
+      title: entity.title,
+      author: entity.author,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
     });

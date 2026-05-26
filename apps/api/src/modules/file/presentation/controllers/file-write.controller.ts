@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -8,8 +9,11 @@ import {
   Query,
   UploadedFile,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAccessGuard } from 'src/modules/auth/presentation/guards/jwt-access.guard';
+import { CurrentUser } from 'src/shared/decorators/current-user.decorator';
 import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
 import { CreateFileUseCase } from '../../application/use-cases/create-file.usecase';
 import { SoftDeleteFileByIdUseCase } from '../../application/use-cases/soft-delete-file-by-id.usecase';
@@ -19,6 +23,7 @@ import { DeleteFileByIdDto } from '../dto/request/delete-file-by-id.dto';
 import { DeleteFilesDto } from '../dto/request/delete-files.dto';
 import { FileResponseDto } from '../dto/response/file-response.dto';
 
+@UseGuards(JwtAccessGuard)
 @Controller('files')
 export class FileWriteController {
   constructor(
@@ -33,10 +38,19 @@ export class FileWriteController {
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Body() dto: CreateFileDto,
+    @CurrentUser('id') ownerId: string,
   ): Promise<ApiResponseDto<FileResponseDto>> {
+    if (!file) {
+      throw new BadRequestException('File is required');
+    }
+
     const { labId } = dto;
 
-    const fileEntity = await this.createFileUseCase.execute(labId, file);
+    const fileEntity = await this.createFileUseCase.execute(
+      labId,
+      ownerId,
+      file,
+    );
 
     const data = FileResponseDto.fromEntity(fileEntity);
 
