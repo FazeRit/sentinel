@@ -20,13 +20,18 @@ export const winstonConfig = createLogger({
   ),
   transports: [
     new transports.Console({
-      format: format.combine(format.colorize({ all: true }), customFormat),
+      format: format.combine(
+        format.colorize({
+          all: true,
+        }),
+        customFormat,
+      ),
     }),
 
     new DailyRotateFile({
       filename: 'combined-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
-      dirname: 'logs',
+      dirname: 'logs/general',
       maxSize: '20m',
       maxFiles: '14d',
       format: format.combine(format.uncolorize(), format.json()),
@@ -35,7 +40,7 @@ export const winstonConfig = createLogger({
     new DailyRotateFile({
       filename: 'error-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
-      dirname: 'logs',
+      dirname: 'logs/errors',
       maxSize: '20m',
       maxFiles: '30d',
       level: 'error',
