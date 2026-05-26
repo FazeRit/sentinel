@@ -8,6 +8,7 @@ import {
   LoggerService,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
+import { Request } from 'express';
 import { ApiResponseDto } from '../dto/response/api-response.dto';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
@@ -22,7 +23,7 @@ export class CatchEverythingFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
-    const request = ctx.getRequest();
+    const request = ctx.getRequest<Request>();
 
     const status =
       exception instanceof HttpException
@@ -31,12 +32,15 @@ export class CatchEverythingFilter implements ExceptionFilter {
 
     const userMessage = this.getUserFriendlyMessage(exception);
 
+    const { method, originalUrl, ip } = request;
+    const userAgent = request.get
+      ? request.get('user-agent') || 'Unknown'
+      : 'Unknown';
+
     const logMessage =
       exception instanceof Error
-        ? `${exception.message}\n${exception.stack}`
-        : typeof exception === 'string'
-          ? exception
-          : JSON.stringify(exception);
+        ? `[Exception] ${method} ${originalUrl} ${status} - Error: ${exception.message} - IP: ${ip} - UA: ${userAgent}\n${exception.stack}`
+        : `[Exception] ${method} ${originalUrl} ${status} - Error: ${typeof exception === 'string' ? exception : JSON.stringify(exception)} - IP: ${ip} - UA: ${userAgent}`;
 
     this.logger.error(logMessage);
 
