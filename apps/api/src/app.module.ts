@@ -6,16 +6,19 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { BullModule } from '@nestjs/bullmq';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './config/winston/winston.config';
-import { PrismaModule } from './infra/prisma/prisma.module';
+import { PrismaModule } from './shared/infra/prisma/prisma.module';
+import { CacheModule } from './shared/infra/cache/cache.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
 import { SessionModule } from './modules/sessions/session.module';
 import { UsersModule } from './modules/users/users.module';
 import { CatchEverythingFilter } from './shared/filters/http-exception.filter';
+import { IdempotencyKeyInterceptor } from './shared/interceptors/idempotency-key.interceptor';
 
 @Module({
   imports: [
     PrismaModule,
+    CacheModule,
     ThrottlerModule.forRoot(),
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({
@@ -45,6 +48,10 @@ import { CatchEverythingFilter } from './shared/filters/http-exception.filter';
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: IdempotencyKeyInterceptor,
     },
     {
       provide: APP_GUARD,
