@@ -1,4 +1,4 @@
-import { ApiPaginationMetaResponseDto } from './api-paginition-meta-response.dto';
+import { ApiPaginationMetaResponseDto } from './api-pagination-meta-response.dto';
 
 export class PaginationResult<T> {
   items: Array<T>;

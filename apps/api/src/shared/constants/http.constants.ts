@@ -1,0 +1,1 @@
+export const MUTATING_HTTP_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
