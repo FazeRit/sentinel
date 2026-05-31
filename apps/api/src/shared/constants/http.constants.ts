@@ -1,1 +1,1 @@
-export const MUTATING_HTTP_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
+export const HTTP_WRITE_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];

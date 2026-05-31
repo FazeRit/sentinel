@@ -12,7 +12,8 @@ import {
   CACHE_STORAGE_PORT,
   CacheStoragePort,
 } from 'src/shared/application/ports/cache-storage.port';
-import { MUTATING_HTTP_METHODS } from 'src/shared/constants/http.constants';
+import { HTTP_WRITE_METHODS } from 'src/shared/constants/http.constants';
+import { IDEMPOTENCY_KEY_STATUS } from '../constants/idempotency.constants';
 
 @Injectable()
 export class IdempotencyKeyInterceptor implements NestInterceptor {
@@ -28,7 +29,7 @@ export class IdempotencyKeyInterceptor implements NestInterceptor {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest();
 
-    if (!MUTATING_HTTP_METHODS.includes(request.method)) {
+    if (!HTTP_WRITE_METHODS.includes(request.method)) {
       return next.handle();
     }
 
@@ -60,13 +61,17 @@ export class IdempotencyKeyInterceptor implements NestInterceptor {
       statusActions[cached]();
     }
 
-    await this.cacheStorage.set(cacheKey, 'PENDING', 60);
+    await this.cacheStorage.set(cacheKey, IDEMPOTENCY_KEY_STATUS.PENDING, 60);
 
     return next.handle().pipe(
       tap({
         next: async () => {
           try {
-            await this.cacheStorage.set(cacheKey, 'COMPLETED', 86400);
+            await this.cacheStorage.set(
+              cacheKey,
+              IDEMPOTENCY_KEY_STATUS.COMPLETED,
+              86400,
+            );
           } catch {}
         },
         error: async () => {
