@@ -2,7 +2,7 @@ import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { BullModule } from '@nestjs/bullmq';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './config/winston/winston.config';
@@ -14,6 +14,7 @@ import { SessionModule } from './modules/sessions/session.module';
 import { UsersModule } from './modules/users/users.module';
 import { CatchEverythingFilter } from './shared/filters/http-exception.filter';
 import { IdempotencyKeyInterceptor } from './shared/interceptors/idempotency-key.interceptor';
+import { CustomThrottlerGuard } from './shared/guards/throttler.guard';
 
 @Module({
   imports: [
@@ -55,7 +56,7 @@ import { IdempotencyKeyInterceptor } from './shared/interceptors/idempotency-key
     },
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: CustomThrottlerGuard,
     },
   ],
 })

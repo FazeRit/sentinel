@@ -33,6 +33,14 @@ export class RedisCacheService
     await this.redis.set(key, value, 'EX', ttlSeconds);
   }
 
+  async incr(key: string, ttl: number): Promise<number> {
+    const count = await this.redis.incr(key);
+
+    if (count === 1) await this.redis.expire(key, ttl);
+
+    return count;
+  }
+
   async delete(key: string): Promise<void> {
     await this.redis.del(key);
   }
