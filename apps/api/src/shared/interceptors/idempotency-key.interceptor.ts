@@ -17,6 +17,8 @@ import { IDEMPOTENCY_KEY_STATUS } from '../constants/idempotency.constants';
 
 @Injectable()
 export class IdempotencyKeyInterceptor implements NestInterceptor {
+  private readonly CACHE_IDEMPOTENCY_KEY: string = 'idempotency';
+
   constructor(
     @Inject(CACHE_STORAGE_PORT)
     private readonly cacheStorage: CacheStoragePort,
@@ -41,7 +43,7 @@ export class IdempotencyKeyInterceptor implements NestInterceptor {
       return next.handle();
     }
 
-    const cacheKey = `idempotency:${idempotencyKey}`;
+    const cacheKey = `${this.CACHE_IDEMPOTENCY_KEY}:${idempotencyKey}`;
     const cached = await this.cacheStorage.get(cacheKey);
 
     const statusActions: Record<string, () => never> = {
