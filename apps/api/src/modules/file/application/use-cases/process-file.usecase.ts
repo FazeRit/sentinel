@@ -1,7 +1,12 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { FILE_READ_PORT, FileReadPort } from '../ports/file-read.port';
 import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
-import { PdfAnalyzerService } from '../../infra/services/pdf-analyzer.service';
+import { PDF_ANALYZER_PORT, PdfAnalyzerPort } from '../ports/pdf-analyzer.port';
 
 @Injectable()
 export class ProcessFileUseCase {
@@ -10,7 +15,8 @@ export class ProcessFileUseCase {
     private readonly fileReadRepo: FileReadPort,
     @Inject(FILE_WRITE_PORT)
     private readonly fileWriteRepo: FileWritePort,
-    private readonly pdfAnalyzer: PdfAnalyzerService,
+    @Inject(PDF_ANALYZER_PORT)
+    private readonly pdfAnalyzer: PdfAnalyzerPort,
   ) {}
 
   async execute(fileId: string): Promise<void> {
@@ -25,7 +31,7 @@ export class ProcessFileUseCase {
 
     try {
       if (!file.storagePath) {
-        throw new Error('File has no storage path');
+        throw new BadRequestException('File has no storage path');
       }
 
       const metadata = await this.pdfAnalyzer.analyze(file.storagePath);
