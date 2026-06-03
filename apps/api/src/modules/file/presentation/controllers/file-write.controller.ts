@@ -13,8 +13,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAccessGuard } from 'src/modules/auth/presentation/guards/jwt-access.guard';
-import { CurrentUser } from 'src/shared/decorators/current-user.decorator';
-import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
+import { CurrentUser } from 'src/shared/presentation/decorators/current-user.decorator';
+import { ApiResponseDto } from 'src/shared/presentation/dto/response/api-response.dto';
 import { CreateFileUseCase } from '../../application/use-cases/create-file.usecase';
 import { SoftDeleteFileByIdUseCase } from '../../application/use-cases/soft-delete-file-by-id.usecase';
 import { SoftDeleteFilesUseCase } from '../../application/use-cases/soft-delete-files.usecase';

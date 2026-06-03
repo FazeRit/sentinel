@@ -12,7 +12,7 @@ import {
   CACHE_STORAGE_PORT,
   CacheStoragePort,
 } from 'src/shared/application/ports/cache-storage.port';
-import { HTTP_WRITE_METHODS } from 'src/shared/constants/http.constants';
+import { HTTP_WRITE_METHODS } from 'src/shared/presentation/constants/http.constants';
 import { IDEMPOTENCY_KEY_STATUS } from '../constants/idempotency.constants';
 
 @Injectable()

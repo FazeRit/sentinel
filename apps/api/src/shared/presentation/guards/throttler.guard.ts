@@ -10,7 +10,7 @@ import { Reflector } from '@nestjs/core';
 import {
   CACHE_STORAGE_PORT,
   CacheStoragePort,
-} from '../application/ports/cache-storage.port';
+} from '../../application/ports/cache-storage.port';
 import {
   IThrottleOptions,
   THROTTLE_METADATA_KEY,

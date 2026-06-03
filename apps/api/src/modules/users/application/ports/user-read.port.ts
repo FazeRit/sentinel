@@ -1,4 +1,4 @@
-import { PaginationResult } from 'src/shared/dto/response/pagination-result.dto';
+import { PaginationResult } from 'src/shared/presentation/dto/response/pagination-result.dto';
 import { UserEntity } from '../../domain/entities/user.entity';
 
 export const USER_READ_PORT = Symbol('user-read-port');

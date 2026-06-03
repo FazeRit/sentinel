@@ -12,10 +12,10 @@ import { RevokeSessionByIdUseCase } from 'src/modules/sessions/application/use-c
 import { RevokeSessionsByUserIdUseCase } from 'src/modules/sessions/application/use-cases/revoke-sessions-by-user-id.usecase';
 import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
 import { UserResponseDto } from 'src/modules/users/presentation/dto/response/user-response.dto';
-import { CurrentUser } from 'src/shared/decorators/current-user.decorator';
-import { Public } from 'src/shared/decorators/public.decorator';
-import { CustomThrottle } from 'src/shared/decorators/custom-throttle.decorator';
-import { ApiResponseDto } from 'src/shared/dto/response/api-response.dto';
+import { CurrentUser } from 'src/shared/presentation/decorators/current-user.decorator';
+import { Public } from 'src/shared/presentation/decorators/public.decorator';
+import { CustomThrottle } from 'src/shared/presentation/decorators/custom-throttle.decorator';
+import { ApiResponseDto } from 'src/shared/presentation/dto/response/api-response.dto';
 import { LoginUserUseCase } from '../../application/use-cases/login-user.usercase';
 import { RefreshTokenUseCase } from '../../application/use-cases/refresh-token.usecase';
 import { RegisterUserUseCase } from '../../application/use-cases/register-user.usecase';

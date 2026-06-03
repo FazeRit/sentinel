@@ -1,4 +1,4 @@
-// apps/api/src/shared/decorators/current-user.decorator.ts
+// apps/api/src/shared/presentation/decorators/current-user.decorator.ts
 
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { IAuthenticatedUser } from 'src/modules/auth/domain/types/auth.types';

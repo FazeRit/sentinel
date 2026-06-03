@@ -12,9 +12,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
 import { SessionModule } from './modules/sessions/session.module';
 import { UsersModule } from './modules/users/users.module';
-import { CatchEverythingFilter } from './shared/filters/http-exception.filter';
-import { IdempotencyKeyInterceptor } from './shared/interceptors/idempotency-key.interceptor';
-import { CustomThrottlerGuard } from './shared/guards/throttler.guard';
+import { CatchEverythingFilter } from './shared/presentation/filters/http-exception.filter';
+import { IdempotencyKeyInterceptor } from './shared/presentation/interceptors/idempotency-key.interceptor';
+import { CustomThrottlerGuard } from './shared/presentation/guards/throttler.guard';
 
 @Module({
   imports: [
