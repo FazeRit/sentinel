@@ -17,7 +17,7 @@ import { FileProcessingGateway } from './presentation/gateway/file-processing.ga
 import { fileProviders } from './providers/file.provider';
 import { memoryStorageProviders } from './providers/memory-storage.provider';
 import { queueProviders } from './providers/queue.provider';
-import { PdfAnalyzerService } from './infra/services/pdf-analyzer.service';
+import { pdfAnalyzerProviders } from './providers/pdf-analyzer.provider';
 import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
 
 @Module({
@@ -30,6 +30,7 @@ import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
     ...fileProviders,
     ...memoryStorageProviders,
     ...queueProviders,
+    ...pdfAnalyzerProviders,
     CreateFileUseCase,
     EnqueueFileProcessingUseCase,
     ProcessFileUseCase,
@@ -39,7 +40,6 @@ import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
     SoftDeleteFilesUseCase,
     HardDeleteFilesUseCase,
     CleanExpiredFilesUseCase,
-    PdfAnalyzerService,
     FileCleanUpCron,
     FileProcessingGateway,
   ],
