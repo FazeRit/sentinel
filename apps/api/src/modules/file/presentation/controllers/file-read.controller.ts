@@ -49,7 +49,11 @@ export class FileReadController {
       message: 'Files retrieved successfully',
       timestamp: new Date(),
       path: '/files',
-      meta,
+      meta: new ApiPaginationMetaResponseDto(
+        meta.nextCursor ?? undefined,
+        meta.hasNextPage,
+        meta.totalItems,
+      ),
     });
 
     return response;
