@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/infra/prisma/prisma.service';
-import { ApiPaginationMetaResponseDto } from 'src/shared/dto/response/api-pagination-meta-response.dto';
-import { PaginationResult } from 'src/shared/dto/response/pagination-result.dto';
+import { ApiPaginationMetaResponseDto } from 'src/shared/presentation/dto/response/api-pagination-meta-response.dto';
+import { PaginationResult } from 'src/shared/presentation/dto/response/pagination-result.dto';
 import { UserReadPort } from '../../application/ports/user-read.port';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { UserMapper } from '../mappers/user.mapper';
