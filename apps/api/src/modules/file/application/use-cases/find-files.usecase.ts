@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PaginationResult } from 'src/shared/dto/response/pagination-result.dto';
+import { PaginatedResult } from 'src/shared/application/interfaces/paginated-result.interface';
 import { FileEntity } from '../../domain/entities/file.entity';
 import { FILE_READ_PORT, FileReadPort } from '../ports/file-read.port';
 
@@ -15,7 +15,7 @@ export class FindFilesUseCase {
     ownerId?: string,
     cursor?: string,
     limit: number = 10,
-  ): Promise<PaginationResult<FileEntity>> {
+  ): Promise<PaginatedResult<FileEntity>> {
     const { items, meta } = await this.fileReadRepo.findFiles(
       limit,
       labId,

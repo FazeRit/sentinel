@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/infra/prisma/prisma.service';
-import { ApiPaginationMetaResponseDto } from 'src/shared/dto/response/api-pagination-meta-response.dto';
-import { PaginationResult } from 'src/shared/dto/response/pagination-result.dto';
+import { PaginatedResult } from 'src/shared/application/interfaces/paginated-result.interface';
 import { FileReadPort } from '../../application/ports/file-read.port';
 import { FileEntity } from '../../domain/entities/file.entity';
 import { FileMapper } from '../mappers/file.mapper';
@@ -27,7 +26,7 @@ export class FileReadRepository implements FileReadPort {
     labId?: string,
     ownerId?: string,
     cursor?: string,
-  ): Promise<PaginationResult<FileEntity>> {
+  ): Promise<PaginatedResult<FileEntity>> {
     const files = await this.prisma.file.findMany({
       take: limit + 1,
       cursor: cursor ? { id: cursor } : undefined,
@@ -58,11 +57,11 @@ export class FileReadRepository implements FileReadPort {
 
     return {
       items: items.map(FileMapper.toEntity),
-      meta: new ApiPaginationMetaResponseDto(
-        nextCursor ?? undefined,
+      meta: {
+        nextCursor,
         hasNextPage,
         totalItems,
-      ),
+      },
     };
   }
 
