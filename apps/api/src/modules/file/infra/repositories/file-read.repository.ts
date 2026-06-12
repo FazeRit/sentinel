@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/infra/database/prisma.service';
 import { PaginatedResult } from 'src/shared/application/interfaces/paginated-result.interface';
-import { FileReadPort } from '../../application/ports/file-read.port';
+import { FileReadPort } from '../../application/ports/database/file-read.port';
 import { FileEntity } from '../../domain/entities/file.entity';
 import { FileMapper } from '../mappers/file.mapper';
 

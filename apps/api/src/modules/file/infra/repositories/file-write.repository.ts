@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/infra/database/prisma.service';
-import { FileWritePort } from '../../application/ports/file-write.port';
+import { FileWritePort } from '../../application/ports/database/file-write.port';
 import { FileEntity } from '../../domain/entities/file.entity';
 import { FileMapper } from '../mappers/file.mapper';
 

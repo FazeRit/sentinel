@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
-import { FileQueuePort } from 'src/modules/file/application/ports/file-queue.port';
+import { FileQueuePort } from 'src/modules/file/application/ports/queue/file-queue.port';
 import { FILE_PROCESSING_QUEUE } from '../../constants/file.constants';
 
 @Injectable()

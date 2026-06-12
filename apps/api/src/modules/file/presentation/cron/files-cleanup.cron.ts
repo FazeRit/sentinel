@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { CleanExpiredFilesUseCase } from '../../application/use-cases/clean-expired-files.usecase';
+import { CleanExpiredFilesUseCase } from '../../application/use-cases/commands/clean-expired-files.usecase';
 
 @Injectable()
 export class FileCleanUpCron {

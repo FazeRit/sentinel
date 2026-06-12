@@ -4,16 +4,16 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { FILE_READ_PORT, FileReadPort } from '../ports/file-read.port';
-import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
+import { FILE_READ_PORT, FileReadPort } from '../../ports/database/file-read.port';
+import { FILE_WRITE_PORT, FileWritePort } from '../../ports/database/file-write.port';
 import {
   FILE_VECTOR_STORAGE_WRITE_PORT,
   FileVectorStorageWritePort,
-} from '../ports/file-vector-storage-write.port';
+} from '../../ports/vector/file-vector-storage-write.port';
 import {
   FILE_ANALYZER_PORT,
   FileAnalyzerPort,
-} from '../ports/file-analyzer.port';
+} from '../../ports/analysis/file-analyzer.port';
 
 @Injectable()
 export class ProcessFileUseCase {

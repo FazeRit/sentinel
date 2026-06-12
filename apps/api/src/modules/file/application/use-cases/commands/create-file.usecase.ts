@@ -5,13 +5,13 @@ import {
   Inject,
   Logger,
 } from '@nestjs/common';
-import { FileEntity } from '../../domain/entities/file.entity';
-import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
+import { FileEntity } from '../../../domain/entities/file.entity';
+import { FILE_WRITE_PORT, FileWritePort } from '../../ports/database/file-write.port';
 import {
   MEMORY_STORAGE_WRITE_PORT,
   MemoryStorageWritePort,
-} from '../ports/memory-storage-write.port';
-import { FILE_QUEUE_PORT, FileQueuePort } from '../ports/file-queue.port';
+} from '../../ports/storage/memory-storage-write.port';
+import { FILE_QUEUE_PORT, FileQueuePort } from '../../ports/queue/file-queue.port';
 
 @Injectable()
 export class CreateFileUseCase {
