@@ -5,10 +5,10 @@ export enum FileStatus {
   FAILED = 'FAILED',
 }
 
-export interface PdfMetadata {
-  pageCount: number;
-  title: string | null;
-  author: string | null;
+export interface FileMetadata {
+  pageCount?: number;
+  title?: string;
+  author?: string;
 }
 
 export interface IFileProps {

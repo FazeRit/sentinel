@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/shared/infra/prisma/prisma.service';
+import { PrismaService } from 'src/shared/infra/database/prisma.service';
 import { ApiPaginationMetaResponseDto } from 'src/shared/presentation/dto/response/api-pagination-meta-response.dto';
 import { PaginationResult } from 'src/shared/presentation/dto/response/pagination-result.dto';
 import { UserReadPort } from '../../application/ports/user-read.port';

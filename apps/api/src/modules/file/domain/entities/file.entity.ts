@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import {
   FileStatus,
-  PdfMetadata,
+  FileMetadata,
   TCreateFileProps,
   TRestoreFileProps,
 } from '../types/file.types';
@@ -122,10 +122,10 @@ export class FileEntity {
     this._storagePath = path;
   }
 
-  public setMetadata(meta: PdfMetadata): void {
-    this._pageCount = meta.pageCount;
-    this._title = meta.title;
-    this._author = meta.author;
+  public setMetadata(meta: FileMetadata): void {
+    this._pageCount = meta.pageCount ?? null;
+    this._title = meta.title ?? null;
+    this._author = meta.author ?? null;
   }
 
   public softDelete(): void {

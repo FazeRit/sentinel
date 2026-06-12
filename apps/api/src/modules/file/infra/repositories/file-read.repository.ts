@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/shared/infra/prisma/prisma.service';
+import { PrismaService } from 'src/shared/infra/database/prisma.service';
 import { PaginatedResult } from 'src/shared/application/interfaces/paginated-result.interface';
 import { FileReadPort } from '../../application/ports/file-read.port';
 import { FileEntity } from '../../domain/entities/file.entity';
@@ -87,5 +87,17 @@ export class FileReadRepository implements FileReadPort {
     });
 
     return files.map(FileMapper.toEntity);
+  }
+
+  async countFiles(labId: string, ownerId?: string): Promise<number> {
+    return this.prisma.file.count({
+      where: {
+        labId,
+        deletedAt: null,
+        ...(ownerId && {
+          ownerId,
+        }),
+      },
+    });
   }
 }

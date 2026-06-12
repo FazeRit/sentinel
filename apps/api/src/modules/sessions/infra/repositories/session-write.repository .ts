@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/shared/infra/prisma/prisma.service';
+import { PrismaService } from 'src/shared/infra/database/prisma.service';
 import { SessionWritePort } from '../../application/ports/session-write.port';
 import { SessionEntity } from '../../domain/entities/session.entity';
 import { SessionMapper } from '../mappers/session.mapper';

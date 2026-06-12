@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
-import { FileQueuePort } from '../../application/ports/file-queue.port';
-import { FILE_PROCESSING_QUEUE } from '../constants/file.constants';
+import { FileQueuePort } from 'src/modules/file/application/ports/file-queue.port';
+import { FILE_PROCESSING_QUEUE } from '../../constants/file.constants';
 
 @Injectable()
-export class ProcessFileQueueService implements FileQueuePort {
+export class FileQueueService implements FileQueuePort {
   constructor(
     @InjectQueue(FILE_PROCESSING_QUEUE)
     private readonly queue: Queue,
