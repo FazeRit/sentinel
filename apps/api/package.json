@@ -32,6 +32,7 @@
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
     "@prisma/config": "^7.7.0",
+    "@qdrant/qdrant-js": "^1.18.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/passport-jwt": "^4.0.1",
     "argon2": "^0.44.0",

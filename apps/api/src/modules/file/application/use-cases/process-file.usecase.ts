@@ -6,7 +6,14 @@ import {
 } from '@nestjs/common';
 import { FILE_READ_PORT, FileReadPort } from '../ports/file-read.port';
 import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
-import { PDF_ANALYZER_PORT, PdfAnalyzerPort } from '../ports/pdf-analyzer.port';
+import {
+  FILE_VECTOR_STORAGE_WRITE_PORT,
+  FileVectorStorageWritePort,
+} from '../ports/file-vector-storage-write.port';
+import {
+  FILE_ANALYZER_PORT,
+  FileAnalyzerPort,
+} from '../ports/file-analyzer.port';
 
 @Injectable()
 export class ProcessFileUseCase {
@@ -15,13 +22,14 @@ export class ProcessFileUseCase {
     private readonly fileReadRepo: FileReadPort,
     @Inject(FILE_WRITE_PORT)
     private readonly fileWriteRepo: FileWritePort,
-    @Inject(PDF_ANALYZER_PORT)
-    private readonly pdfAnalyzer: PdfAnalyzerPort,
+    @Inject(FILE_ANALYZER_PORT)
+    private readonly fileAnalyzer: FileAnalyzerPort,
+    @Inject(FILE_VECTOR_STORAGE_WRITE_PORT)
+    private readonly vectorStorage: FileVectorStorageWritePort,
   ) {}
 
   async execute(fileId: string): Promise<void> {
     const file = await this.fileReadRepo.findFileById(fileId);
-
     if (!file) {
       throw new NotFoundException(`File with ID "${fileId}" not found`);
     }
@@ -34,8 +42,23 @@ export class ProcessFileUseCase {
         throw new BadRequestException('File has no storage path');
       }
 
-      const metadata = await this.pdfAnalyzer.analyze(file.storagePath);
+      const metadata = await this.fileAnalyzer.analyze(file.storagePath);
       file.setMetadata(metadata);
+
+      // TODO: change to normal vector
+      await this.vectorStorage.saveFile({
+        id: file.id,
+        vector: new Array(1536).fill(0),
+        payload: {
+          file_id: file.id,
+          lab_id: file.labId || '',
+          user_id: file.ownerId,
+          pageCount: file.pageCount ?? undefined,
+          title: file.title ?? undefined,
+          author: file.author ?? undefined,
+        },
+      });
+
       file.markAsReady();
     } catch {
       file.markAsFailed();
