@@ -1,6 +1,12 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { FILE_READ_PORT, FileReadPort } from '../ports/file-read.port';
-import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
+import {
+  FILE_READ_PORT,
+  FileReadPort,
+} from '../../ports/database/file-read.port';
+import {
+  FILE_WRITE_PORT,
+  FileWritePort,
+} from '../../ports/database/file-write.port';
 
 @Injectable()
 export class SoftDeleteFileByIdUseCase {

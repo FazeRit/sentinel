@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { FILE_READ_PORT, FileReadPort } from '../ports/file-read.port';
-import { FILE_WRITE_PORT, FileWritePort } from '../ports/file-write.port';
+import { FILE_READ_PORT, FileReadPort } from '../../ports/database/file-read.port';
+import { FILE_WRITE_PORT, FileWritePort } from '../../ports/database/file-write.port';
 import {
   MEMORY_STORAGE_WRITE_PORT,
   MemoryStorageWritePort,
-} from '../ports/memory-storage-write.port';
+} from '../../ports/storage/memory-storage-write.port';
 import {
   FILE_VECTOR_STORAGE_WRITE_PORT,
   FileVectorStorageWritePort,
-} from '../ports/file-vector-storage-write.port';
+} from '../../ports/vector/file-vector-storage-write.port';
 
 @Injectable()
 export class HardDeleteFilesUseCase {

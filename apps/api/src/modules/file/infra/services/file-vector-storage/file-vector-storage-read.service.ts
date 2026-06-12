@@ -6,7 +6,7 @@ import {
   FileVectorPayload,
   VectorSearchResult,
   VectorStorageFilter,
-} from 'src/modules/file/application/ports/file-vector-storage-read.port';
+} from 'src/modules/file/application/ports/vector/file-vector-storage-read.port';
 
 @Injectable()
 export class FileVectorStorageReadService implements FileVectorStorageReadPort {

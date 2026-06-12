@@ -1,5 +1,5 @@
 import { PaginatedResult } from 'src/shared/application/interfaces/paginated-result.interface';
-import { FileEntity } from '../../domain/entities/file.entity';
+import { FileEntity } from '../../../domain/entities/file.entity';
 
 export const FILE_READ_PORT = Symbol('file-read-port');
 
