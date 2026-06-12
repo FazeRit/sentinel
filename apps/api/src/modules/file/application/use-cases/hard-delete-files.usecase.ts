@@ -5,6 +5,10 @@ import {
   MEMORY_STORAGE_WRITE_PORT,
   MemoryStorageWritePort,
 } from '../ports/memory-storage-write.port';
+import {
+  FILE_VECTOR_STORAGE_WRITE_PORT,
+  FileVectorStorageWritePort,
+} from '../ports/file-vector-storage-write.port';
 
 @Injectable()
 export class HardDeleteFilesUseCase {
@@ -15,6 +19,8 @@ export class HardDeleteFilesUseCase {
     private readonly fileReadRepo: FileReadPort,
     @Inject(MEMORY_STORAGE_WRITE_PORT)
     private readonly storageWrite: MemoryStorageWritePort,
+    @Inject(FILE_VECTOR_STORAGE_WRITE_PORT)
+    private readonly vectorStorage: FileVectorStorageWritePort,
   ) {}
 
   async execute(ids: string[]): Promise<void> {
@@ -23,6 +29,8 @@ export class HardDeleteFilesUseCase {
     }
 
     const files = await this.fileReadRepo.findFilesByIds(ids);
+
+    await this.vectorStorage.deleteFiles(ids);
 
     if (files.length === 0) {
       await this.fileWriteRepo.hardDeleteFiles(ids);

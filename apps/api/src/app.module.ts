@@ -6,7 +6,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { BullModule } from '@nestjs/bullmq';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './config/winston/winston.config';
-import { PrismaModule } from './shared/infra/prisma/prisma.module';
+import { PrismaModule } from './shared/infra/database/prisma.module';
 import { CacheModule } from './shared/infra/cache/cache.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';

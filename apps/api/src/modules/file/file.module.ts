@@ -6,7 +6,6 @@ import { SoftDeleteFilesUseCase } from './application/use-cases/soft-delete-file
 import { FindFileByIdUseCase } from './application/use-cases/find-file-by-id.usecase';
 import { FindFilesUseCase } from './application/use-cases/find-files.usecase';
 import { CreateFileUseCase } from './application/use-cases/create-file.usecase';
-import { EnqueueFileProcessingUseCase } from './application/use-cases/enqueue-file-processing.usecase';
 import { ProcessFileUseCase } from './application/use-cases/process-file.usecase';
 import { HardDeleteFilesUseCase } from './application/use-cases/hard-delete-files.usecase';
 import { CleanExpiredFilesUseCase } from './application/use-cases/clean-expired-files.usecase';
@@ -17,7 +16,8 @@ import { FileProcessingGateway } from './presentation/gateway/file-processing.ga
 import { fileProviders } from './providers/file.provider';
 import { memoryStorageProviders } from './providers/memory-storage.provider';
 import { queueProviders } from './providers/queue.provider';
-import { pdfAnalyzerProviders } from './providers/pdf-analyzer.provider';
+import { fileAnalyzerProviders } from './providers/file-analyzer.provider';
+import { fileVectorStorageProviders } from './providers/file-vector-storage.provider';
 import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
 
 @Module({
@@ -30,9 +30,9 @@ import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
     ...fileProviders,
     ...memoryStorageProviders,
     ...queueProviders,
-    ...pdfAnalyzerProviders,
+    ...fileAnalyzerProviders,
+    ...fileVectorStorageProviders,
     CreateFileUseCase,
-    EnqueueFileProcessingUseCase,
     ProcessFileUseCase,
     FindFileByIdUseCase,
     FindFilesUseCase,

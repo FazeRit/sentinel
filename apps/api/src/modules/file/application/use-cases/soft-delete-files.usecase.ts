@@ -12,14 +12,9 @@ export class SoftDeleteFilesUseCase {
   ) {}
 
   async execute(labId: string, ownerId?: string): Promise<void> {
-    const { items: files } = await this.fileReadRepo.findFiles(
-      1000,
-      undefined,
-      labId,
-      ownerId,
-    );
+    const count = await this.fileReadRepo.countFiles(labId, ownerId);
 
-    if (!files || files.length === 0) {
+    if (count === 0) {
       throw new NotFoundException(
         `No files found for laboratory with ID "${labId}"`,
       );

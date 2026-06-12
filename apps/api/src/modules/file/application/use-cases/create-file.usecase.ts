@@ -11,7 +11,7 @@ import {
   MEMORY_STORAGE_WRITE_PORT,
   MemoryStorageWritePort,
 } from '../ports/memory-storage-write.port';
-import { EnqueueFileProcessingUseCase } from './enqueue-file-processing.usecase';
+import { FILE_QUEUE_PORT, FileQueuePort } from '../ports/file-queue.port';
 
 @Injectable()
 export class CreateFileUseCase {
@@ -24,7 +24,8 @@ export class CreateFileUseCase {
     private readonly fileWriteRepo: FileWritePort,
     @Inject(MEMORY_STORAGE_WRITE_PORT)
     private readonly storageWrite: MemoryStorageWritePort,
-    private readonly enqueueFileProcessingUseCase: EnqueueFileProcessingUseCase,
+    @Inject(FILE_QUEUE_PORT)
+    private readonly fileQueue: FileQueuePort,
   ) {}
 
   async execute(
@@ -64,7 +65,7 @@ export class CreateFileUseCase {
 
       await this.fileWriteRepo.saveFile(fileEntity);
 
-      await this.enqueueFileProcessingUseCase.execute(fileEntity.id);
+      await this.fileQueue.enqueueProcessing(fileEntity.id);
 
       return fileEntity;
     } catch (error) {
