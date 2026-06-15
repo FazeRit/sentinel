@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { QdrantClient } from '@qdrant/qdrant-js';
 import {
-  FileVector,
+  IFileVector,
   FileVectorStorageWritePort,
 } from 'src/modules/file/application/ports/vector/file-vector-storage-write.port';
 
@@ -23,11 +23,11 @@ export class FileVectorStorageWriteService implements FileVectorStorageWritePort
     });
   }
 
-  async saveFile(file: FileVector): Promise<void> {
+  async saveFile(file: IFileVector): Promise<void> {
     await this.saveFiles([file]);
   }
 
-  async saveFiles(files: Array<FileVector>): Promise<void> {
+  async saveFiles(files: Array<IFileVector>): Promise<void> {
     await this.client.upsert(this.collectionName, {
       points: files.map((file) => ({
         id: file.id,

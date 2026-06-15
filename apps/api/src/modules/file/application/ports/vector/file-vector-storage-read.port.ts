@@ -1,6 +1,6 @@
 export const FILE_VECTOR_STORAGE_READ_PORT = Symbol('file-vector-storage-read');
 
-export interface FileVectorPayload {
+export interface IFileVectorPayload {
   [key: string]: unknown;
   file_id: string;
   lab_id: string;
@@ -10,26 +10,26 @@ export interface FileVectorPayload {
   author?: string;
 }
 
-export interface VectorStorageFilter {
+export interface IVectorStorageFilter {
   lab_id?: string;
   user_id?: string;
 }
 
-export interface VectorSearchResult {
+export interface IVectorSearchResult {
   id: string;
   score: number;
-  payload: FileVectorPayload;
+  payload: IFileVectorPayload;
 }
 
 export abstract class FileVectorStorageReadPort {
   abstract findFile(
     queryVector: number[],
-    filter?: VectorStorageFilter,
-  ): Promise<VectorSearchResult | null>;
+    filter?: IVectorStorageFilter,
+  ): Promise<IVectorSearchResult | null>;
 
   abstract findFiles(
     queryVector: number[],
     topK: number,
-    filter?: VectorStorageFilter,
-  ): Promise<Array<VectorSearchResult>>;
+    filter?: IVectorStorageFilter,
+  ): Promise<Array<IVectorSearchResult>>;
 }

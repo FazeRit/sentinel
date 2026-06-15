@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { QdrantClient } from '@qdrant/qdrant-js';
 import {
   FileVectorStorageReadPort,
-  FileVectorPayload,
-  VectorSearchResult,
-  VectorStorageFilter,
+  IFileVectorPayload,
+  IVectorSearchResult,
+  IVectorStorageFilter,
 } from 'src/modules/file/application/ports/vector/file-vector-storage-read.port';
 
 @Injectable()
@@ -27,8 +27,8 @@ export class FileVectorStorageReadService implements FileVectorStorageReadPort {
 
   async findFile(
     queryVector: number[],
-    filter?: VectorStorageFilter,
-  ): Promise<VectorSearchResult | null> {
+    filter?: IVectorStorageFilter,
+  ): Promise<IVectorSearchResult | null> {
     const results = await this.findFiles(queryVector, 1, filter);
     return results.length > 0 ? results[0] : null;
   }
@@ -36,8 +36,8 @@ export class FileVectorStorageReadService implements FileVectorStorageReadPort {
   async findFiles(
     queryVector: number[],
     topK: number,
-    filter?: VectorStorageFilter,
-  ): Promise<VectorSearchResult[]> {
+    filter?: IVectorStorageFilter,
+  ): Promise<IVectorSearchResult[]> {
     const results = await this.client.search(this.collectionName, {
       vector: queryVector,
       limit: topK,
@@ -72,7 +72,7 @@ export class FileVectorStorageReadService implements FileVectorStorageReadPort {
     return results.map((result) => ({
       id: String(result.id),
       score: result.score,
-      payload: result.payload as unknown as FileVectorPayload,
+      payload: result.payload as unknown as IFileVectorPayload,
     }));
   }
 }
