@@ -19,6 +19,8 @@ import { queueProviders } from './providers/queue.provider';
 import { fileAnalyzerProviders } from './providers/file-analyzer.provider';
 import { fileVectorStorageProviders } from './providers/file-vector-storage.provider';
 import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
+import { TEXT_CHUNKER_PORT } from './application/ports/analysis/text-chunker.port';
+import { textChunkerProviders } from './providers/text-chunker.provider';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
     ...queueProviders,
     ...fileAnalyzerProviders,
     ...fileVectorStorageProviders,
+    ...textChunkerProviders,
     CreateFileUseCase,
     ProcessFileUseCase,
     FindFileByIdUseCase,
@@ -43,5 +46,6 @@ import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
     FileCleanUpCron,
     FileProcessingGateway,
   ],
+  exports: [TEXT_CHUNKER_PORT],
 })
 export class FileModule {}
