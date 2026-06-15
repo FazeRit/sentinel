@@ -21,6 +21,8 @@ import { fileVectorStorageProviders } from './providers/file-vector-storage.prov
 import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
 import { TEXT_CHUNKER_PORT } from './application/ports/analysis/text-chunker.port';
 import { textChunkerProviders } from './providers/text-chunker.provider';
+import { EMBEDDING_GENERATOR_PORT } from './application/ports/analysis/embedding-generator.port';
+import { embeddingGeneratorProviders } from './providers/embedding-generator.provider';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { textChunkerProviders } from './providers/text-chunker.provider';
     ...fileAnalyzerProviders,
     ...fileVectorStorageProviders,
     ...textChunkerProviders,
+    ...embeddingGeneratorProviders,
     CreateFileUseCase,
     ProcessFileUseCase,
     FindFileByIdUseCase,
@@ -46,6 +49,6 @@ import { textChunkerProviders } from './providers/text-chunker.provider';
     FileCleanUpCron,
     FileProcessingGateway,
   ],
-  exports: [TEXT_CHUNKER_PORT],
+  exports: [TEXT_CHUNKER_PORT, EMBEDDING_GENERATOR_PORT],
 })
 export class FileModule {}

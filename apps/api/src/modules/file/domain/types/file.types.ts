@@ -9,6 +9,7 @@ export interface FileMetadata {
   pageCount?: number;
   title?: string;
   author?: string;
+  text: string;
 }
 
 export interface IFileProps {
