@@ -15,7 +15,6 @@ import {
 } from '../../ports/database/file-write.port';
 import {
   FILE_VECTOR_STORAGE_WRITE_PORT,
-  IFileVector,
   FileVectorStorageWritePort,
 } from '../../ports/vector/file-vector-storage-write.port';
 import {
@@ -30,6 +29,7 @@ import {
   EMBEDDING_GENERATOR_PORT,
   EmbeddingGeneratorPort,
 } from '../../ports/analysis/embedding-generator.port';
+import { chunkArray } from 'src/shared/utils/chunk-array.util';
 
 @Injectable()
 export class ProcessFileUseCase {
@@ -74,14 +74,15 @@ export class ProcessFileUseCase {
 
       const chunks = await this.textChunker.chunkText(text);
 
-      const fileVectors: Array<IFileVector> = [];
+      const textBatches: string[][] = chunkArray(chunks, 100);
 
-      for (const chunk of chunks) {
-        try {
-          const vector = await this.embeddingGenerator.generate(chunk);
-          fileVectors.push({
+      for (const textBatch of textBatches) {
+        const vectors = await this.embeddingGenerator.generateBatch(textBatch);
+
+        const batchVectors = textBatch
+          .map((chunkText, i) => ({
             id: uuidv4(),
-            vector,
+            vector: vectors[i],
             payload: {
               file_id: file.id,
               lab_id: file.labId || '',
@@ -89,16 +90,14 @@ export class ProcessFileUseCase {
               pageCount: file.pageCount ?? undefined,
               title: file.title ?? undefined,
               author: file.author ?? undefined,
-              text: chunk,
+              text: chunkText,
             },
-          });
-        } catch {}
-      }
+          }))
+          .filter((item) => !!item.vector);
 
-      if (fileVectors.length > 0) {
-        try {
-          await this.vectorStorage.saveFiles(fileVectors);
-        } catch {}
+        if (batchVectors.length > 0) {
+          await this.vectorStorage.saveFiles(batchVectors);
+        }
       }
 
       file.markAsReady();
