@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { readFile } from 'fs/promises';
-import { FileAnalyzerPort } from 'src/modules/file/application/ports/file-analyzer.port';
+import { FileAnalyzerPort } from 'src/modules/file/application/ports/analysis/file-analyzer.port';
 import { FileMetadata } from 'src/modules/file/domain/types/file.types';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { PDFParse } = require('pdf-parse');

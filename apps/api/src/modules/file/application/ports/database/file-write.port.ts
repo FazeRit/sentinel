@@ -1,4 +1,4 @@
-import { FileEntity } from '../../domain/entities/file.entity';
+import { FileEntity } from '../../../domain/entities/file.entity';
 
 export const FILE_WRITE_PORT = Symbol('file-write-port');
 

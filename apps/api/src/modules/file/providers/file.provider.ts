@@ -1,7 +1,7 @@
 import { Provider } from '@nestjs/common';
-import { FILE_READ_PORT } from '../application/ports/file-read.port';
+import { FILE_READ_PORT } from '../application/ports/database/file-read.port';
 import { FileReadRepository } from '../infra/repositories/file-read.repository';
-import { FILE_WRITE_PORT } from '../application/ports/file-write.port';
+import { FILE_WRITE_PORT } from '../application/ports/database/file-write.port';
 import { FileWriteRepository } from '../infra/repositories/file-write.repository';
 
 export const fileProviders: Array<Provider> = [

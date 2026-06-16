@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { FILE_READ_PORT, FileReadPort } from '../ports/file-read.port';
+import { FILE_READ_PORT, FileReadPort } from '../../ports/database/file-read.port';
 import { HardDeleteFilesUseCase } from './hard-delete-files.usecase';
 
 @Injectable()

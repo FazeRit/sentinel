@@ -1,4 +1,4 @@
-import { FileMetadata } from '../../domain/types/file.types';
+import { FileMetadata } from '../../../domain/types/file.types';
 
 export const FILE_ANALYZER_PORT = Symbol('file-analyzer-port');
 

@@ -4,7 +4,7 @@ import { QdrantClient } from '@qdrant/qdrant-js';
 import {
   FileVector,
   FileVectorStorageWritePort,
-} from 'src/modules/file/application/ports/file-vector-storage-write.port';
+} from 'src/modules/file/application/ports/vector/file-vector-storage-write.port';
 
 @Injectable()
 export class FileVectorStorageWriteService implements FileVectorStorageWritePort {
