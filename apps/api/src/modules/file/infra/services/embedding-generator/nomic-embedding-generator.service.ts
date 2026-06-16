@@ -37,6 +37,7 @@ export class NomicEmbeddingGeneratorService implements EmbeddingGeneratorPort {
     const response = await this.openai.embeddings.create({
       model: this.model,
       input: texts,
+      dimensions: 768,
     });
     return response.data.map((item) => item.embedding);
   }
