@@ -13,7 +13,7 @@ import { CleanExpiredFilesUseCase } from './application/use-cases/clean-expired-
 import { FileCleanUpCron } from './presentation/cron/files-cleanup.cron';
 import { FileReadController } from './presentation/controllers/file-read.controller';
 import { FileWriteController } from './presentation/controllers/file-write.controller';
-import { FileProcessingGateway } from './presentation/gateway/file-processing.gateway';
+import { FileProcessingProcessor } from './presentation/processors/file-processing.processor';
 import { fileProviders } from './providers/file.provider';
 import { memoryStorageProviders } from './providers/memory-storage.provider';
 import { queueProviders } from './providers/queue.provider';
@@ -41,7 +41,7 @@ import { FILE_PROCESSING_QUEUE } from './infra/constants/file.constants';
     HardDeleteFilesUseCase,
     CleanExpiredFilesUseCase,
     FileCleanUpCron,
-    FileProcessingGateway,
+    FileProcessingProcessor,
   ],
 })
 export class FileModule {}
