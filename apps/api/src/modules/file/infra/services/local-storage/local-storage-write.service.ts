@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { unlink } from 'fs/promises';
 import { pipeline } from 'stream/promises';
 import { homedir } from 'os';
-import { join } from 'path';
+import { join, basename, resolve } from 'path';
 import { existsSync, mkdirSync, createWriteStream } from 'fs';
 import { Readable } from 'stream';
 import { MemoryStorageWritePort } from 'src/modules/file/application/ports/storage/memory-storage-write.port';
@@ -12,8 +12,13 @@ export class LocalStorageWriteService implements MemoryStorageWritePort {
   private readonly baseDir: string = join(homedir(), 'sentinel', 'files');
 
   async delete(storagePath: string): Promise<void> {
+    const resolvedPath = resolve(storagePath);
+    if (!resolvedPath.startsWith(this.baseDir)) {
+      throw new Error('Invalid storage path: path traversal detected');
+    }
+
     try {
-      await unlink(storagePath);
+      await unlink(resolvedPath);
     } catch (error) {
       throw error;
     }
@@ -26,8 +31,13 @@ export class LocalStorageWriteService implements MemoryStorageWritePort {
       });
     }
 
-    const fileName = `${fileId}-${file.originalname}`;
+    const safeName = basename(file.originalname);
+    const fileName = `${fileId}-${safeName}`;
     const fullPath = join(this.baseDir, fileName);
+
+    if (!fullPath.startsWith(this.baseDir)) {
+      throw new Error('Invalid file path: path traversal detected');
+    }
 
     const fileStream = Readable.from(file.buffer);
 
