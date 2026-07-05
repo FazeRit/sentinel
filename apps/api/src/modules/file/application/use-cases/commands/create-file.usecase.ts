@@ -6,12 +6,18 @@ import {
   Logger,
 } from '@nestjs/common';
 import { FileEntity } from '../../../domain/entities/file.entity';
-import { FILE_WRITE_PORT, FileWritePort } from '../../ports/database/file-write.port';
+import {
+  FILE_WRITE_PORT,
+  FileWritePort,
+} from '../../ports/database/file-write.port';
 import {
   MEMORY_STORAGE_WRITE_PORT,
   MemoryStorageWritePort,
 } from '../../ports/storage/memory-storage-write.port';
-import { FILE_QUEUE_PORT, FileQueuePort } from '../../ports/queue/file-queue.port';
+import {
+  FILE_QUEUE_PORT,
+  FileQueuePort,
+} from '../../ports/queue/file-queue.port';
 
 @Injectable()
 export class CreateFileUseCase {
@@ -45,6 +51,14 @@ export class CreateFileUseCase {
     if (!fileEntity.isPdf()) {
       throw new BadRequestException(
         `Invalid file type: ${file.mimetype}. Only PDF is allowed.`,
+      );
+    }
+
+    const PDF_MAGIC_BYTES = Buffer.from('%PDF-');
+    const fileHeader = Buffer.from(file.buffer.slice(0, 5));
+    if (!fileHeader.equals(PDF_MAGIC_BYTES)) {
+      throw new BadRequestException(
+        'File content does not match PDF format. The file may be corrupted or spoofed.',
       );
     }
 
